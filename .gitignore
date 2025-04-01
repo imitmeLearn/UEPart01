@@ -60,6 +60,8 @@ ObjectReflection/Plugins/*/Binaries/*
 
 UnrealInterface/Binaries/*
 UnrealInterface/Plugins/*/Binaries/*
+UnrealComposition/Binaries/*
+UnrealComposition/Plugins/*/Binaries/*
 # Builds
 Build/*
 
@@ -81,6 +83,7 @@ HelloUnreal/Saved/*
 UnrealString/Saved/*
 ObjectReflection/Saved/*
 UnrealInterface/Saved/*
+UnrealComposition/Saved/*
 # Compiled source files for the engine to use
 Intermediate/*
 Plugins/*/Intermediate/*
@@ -97,7 +100,12 @@ ObjectReflection/Plugins/*/Intermediate/*
 
 UnrealInterface/Intermediate/*
 UnrealInterface/Plugins/*/Intermediate/*
+
+UnrealComposition/Intermediate/*
+UnrealComposition/Plugins/*/Intermediate/*
+
 # Cache files for the editor to use
 DerivedDataCache/*
 UnrealInterface/Saved/Logs/UnrealInterface.log
 UnrealInterface/Saved/Telemetry/Telemetry.json
+
