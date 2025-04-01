@@ -20,6 +20,9 @@ public:
 	const FString& GetName() const;
 	void SetName(const FString& InName);
 
+	class UCard* GetCard() const;
+	void SetCard(class UCard* InCard);
+
 protected:
 	//언리얼의 관리를 받도록!
 	UPROPERTY()
@@ -27,4 +30,7 @@ protected:
 
 	UPROPERTY()
 	int32 Year;
+	UPROPERTY()
+	//class UCard* Card;
+	TObjectPtr<class UCard> Card;
 };

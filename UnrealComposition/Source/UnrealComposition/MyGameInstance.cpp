@@ -4,6 +4,7 @@
 #include "Student.h"
 #include "Staff.h"
 #include "MyGameInstance.h"
+#include "Card.h"
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -31,7 +32,8 @@ void UMyGameInstance::Init()
 
 	for (const auto Person : Persons)
 	{
-		//인터페이스 구현 여부 확인
+		UE_LOG(LogTemp, Log, TEXT("===	//인터페이스 구현 여부 확인===="));
+
 		ILessonInterface* LessonInterface
 			= Cast<ILessonInterface>(Person);
 
@@ -48,6 +50,30 @@ void UMyGameInstance::Init()
 
 		Person->GetName();
 		UE_LOG(LogTemp, Log, TEXT("구성원 이름 : %s"), *Person->GetName());
+
+		//카드 정보 출력
+		UE_LOG(LogTemp, Log, TEXT("==카드 정보 출력==="));
+		const UCard* OwnCard = Person->GetCard();
+		//check(OwnCard);
+		ensure(OwnCard);
+
+		//문자열로 출력
+		const UEnum* CardEnumType
+			= FindObject<UEnum>(nullptr
+				, TEXT("/Script/UnrealComposition.ECardType"));
+
+		if (CardEnumType)
+		{
+			FString CardMetaData =
+				CardEnumType->GetDisplayNameTextByValue
+				((int64)OwnCard->GetCardType()).ToString();
+			;
+
+			UE_LOG(LogTemp, Log, TEXT("%s 님이 소유한 카드 종류 : %d")
+				, *Person->GetName()
+				, OwnCard->GetCardType()
+			);
+		}
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("========================"));

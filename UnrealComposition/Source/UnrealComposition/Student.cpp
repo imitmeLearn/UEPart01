@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Student.h"
+#include "Card.h"
 
 UStudent::UStudent()
 {
 	Name = TEXT("장학생");
-	Year = 1;
-	Id = 1;
+	Card->SetCardType(ECardType::Student);
 }
 
 void UStudent::DoLesson()

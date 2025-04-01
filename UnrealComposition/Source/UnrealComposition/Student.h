@@ -20,8 +20,4 @@ class UNREALCOMPOSITION_API UStudent : public UPerson, public ILessonInterface
 public:
 	UStudent();
 	virtual void DoLesson() override;
-
-private:
-	UPROPERTY()
-	int32 Id;
 };
