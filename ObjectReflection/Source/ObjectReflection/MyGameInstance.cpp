@@ -1,5 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Teacher.h"
+#include "Student.h"
 #include "MyGameInstance.h"
 
 UMyGameInstance::UMyGameInstance()
@@ -34,5 +36,48 @@ void UMyGameInstance::Init()
 	UE_LOG(LogTemp, Log, TEXT("학교이름 기본값 : %s"),
 		*RuntimeClass->GetDefaultObject<UMyGameInstance>()->SchoolName);
 
+	UE_LOG(LogTemp, Log, TEXT("======================================="));
+
+	//student /Teacher 객체 생성
+	UStudent* Student = NewObject<UStudent>();
+	UTeacher* Teacher = NewObject<UTeacher>();
+
+	Student->SetName(TEXT("학생1"));
+	UE_LOG(LogTemp, Log, TEXT("새로운 학생 이름 : %s"),
+		*Student->GetName()
+	);
+
+	//리플랙션을 이용한 프로퍼티 정보 설정
+	UE_LOG(LogTemp, Log, TEXT("====리플랙션을 이용한 프로퍼티 정보 설정====="));
+
+	FProperty* NameProperty
+		= UTeacher::StaticClass()->FindPropertyByName(TEXT("Name"));
+
+	//현재 저장된 값 가져오기
+	FString CurrnetTeacherName;
+	if (NameProperty)
+	{
+		NameProperty->GetValue_InContainer(Teacher, &CurrnetTeacherName);
+		UE_LOG(LogTemp, Log, TEXT("현재 선생님 이름 : %s"),
+			*CurrnetTeacherName
+		);
+
+		FString NewTeacherName(TEXT("장세윤"));
+		NameProperty->SetValue_InContainer(Teacher, &NewTeacherName);
+		UE_LOG(LogTemp, Log, TEXT("현재 선생님 이름 : %s"),
+			*Teacher->GetName()
+		);
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("======================================="));
+
+	UE_LOG(LogTemp, Log, TEXT("=====직접호출 , 리플랙션을 통한 함수 호출======"));
+	Student->DoLesson();		//제일 빠른 형태 //직접호출
+	//리플랙션을 통한 함수 호출
+	UFunction* DoLessonFuntion = Teacher->GetClass()->FindFunctionByName(TEXT("DoLesson"));
+	if (DoLessonFuntion)
+	{
+		Teacher->ProcessEvent(DoLessonFuntion, nullptr);
+	}
 	UE_LOG(LogTemp, Log, TEXT("======================================="));
 }

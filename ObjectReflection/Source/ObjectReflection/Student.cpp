@@ -1,10 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Student.h"
 
 UStudent::UStudent()
 {
-	Name = TEXT("ÀåÇĞ»ı");
+	Name = TEXT("ì¥í•™ìƒ");
 	Year = 1;
 	Id = 1;
 }
@@ -12,5 +12,5 @@ UStudent::UStudent()
 void UStudent::DoLesson()
 {
 	Super::DoLesson();
-	UE_LOG(LogTemp, Log, TEXT("%d ÇĞ³â %d ÇĞ»ı %s ´ÔÀÌ ¼ö¾÷À» µè½À´Ï´Ù. "), Year, Id, *Name);
+	UE_LOG(LogTemp, Log, TEXT("%d í•™ë…„ %d í•™ìƒ %s ë‹˜ì´ ìˆ˜ì—…ì„ ë“£ìŠµë‹ˆë‹¤. "), Year, Id, *Name);
 }
