@@ -14,10 +14,6 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define UNREALINTERFACE_Person_generated_h
 
-#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
-	DECLARE_FUNCTION(execDoLesson);
-
-
 #define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUPerson(); \
@@ -43,7 +39,6 @@ public: \
 #define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_15_RPC_WRAPPERS_NO_PURE_DECLS \
 	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_15_INCLASS_NO_PURE_DECLS \
 	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_15_ENHANCED_CONSTRUCTORS \
 private: \

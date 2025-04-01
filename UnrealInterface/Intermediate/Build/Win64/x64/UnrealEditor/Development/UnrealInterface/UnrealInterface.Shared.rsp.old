@@ -1,4 +1,5 @@
 /I "."
+/I "C:\Workspace\UnrealProjects\UEPart01\UnrealInterface\Intermediate\Build\Win64\UnrealEditor\Inc\UnrealInterface\UHT"
 /I "C:\Workspace\UnrealProjects\UEPart01\UnrealInterface\Source"
 /I "Runtime\Core\Public"
 /I "Runtime\Core\Internal"

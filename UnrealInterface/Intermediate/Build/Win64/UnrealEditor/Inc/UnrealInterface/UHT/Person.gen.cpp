@@ -16,43 +16,9 @@ UNREALINTERFACE_API UClass* Z_Construct_UClass_UPerson_NoRegister();
 UPackage* Z_Construct_UPackage__Script_UnrealInterface();
 // End Cross Module References
 
-// Begin Class UPerson Function DoLesson
-struct Z_Construct_UFunction_UPerson_DoLesson_Statics
-{
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "ModuleRelativePath", "Person.h" },
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_UPerson_DoLesson_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_UPerson, nullptr, "DoLesson", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020400, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_UPerson_DoLesson_Statics::Function_MetaDataParams), Z_Construct_UFunction_UPerson_DoLesson_Statics::Function_MetaDataParams) };
-UFunction* Z_Construct_UFunction_UPerson_DoLesson()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_UPerson_DoLesson_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(UPerson::execDoLesson)
-{
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->DoLesson();
-	P_NATIVE_END;
-}
-// End Class UPerson Function DoLesson
-
 // Begin Class UPerson
 void UPerson::StaticRegisterNativesUPerson()
 {
-	UClass* Class = UPerson::StaticClass();
-	static const FNameNativePtrPair Funcs[] = {
-		{ "DoLesson", &UPerson::execDoLesson },
-	};
-	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
 IMPLEMENT_CLASS_NO_AUTO_REGISTRATION(UPerson);
 UClass* Z_Construct_UClass_UPerson_NoRegister()
@@ -86,10 +52,6 @@ struct Z_Construct_UClass_UPerson_Statics
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Year;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
-	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_UPerson_DoLesson, "DoLesson" }, // 1850404832
-	};
-	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UPerson>::IsAbstract,
 	};
@@ -112,11 +74,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_UPerson_Statics::ClassP
 	nullptr,
 	&StaticCppClassTypeInfo,
 	DependentSingletons,
-	FuncInfo,
+	nullptr,
 	Z_Construct_UClass_UPerson_Statics::PropPointers,
 	nullptr,
 	UE_ARRAY_COUNT(DependentSingletons),
-	UE_ARRAY_COUNT(FuncInfo),
+	0,
 	UE_ARRAY_COUNT(Z_Construct_UClass_UPerson_Statics::PropPointers),
 	0,
 	0x001000A0u,
@@ -142,10 +104,10 @@ UPerson::~UPerson() {}
 struct Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UPerson, UPerson::StaticClass, TEXT("UPerson"), &Z_Registration_Info_UClass_UPerson, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UPerson), 1249388156U) },
+		{ Z_Construct_UClass_UPerson, UPerson::StaticClass, TEXT("UPerson"), &Z_Registration_Info_UClass_UPerson, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UPerson), 2666212232U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_1858194784(TEXT("/Script/UnrealInterface"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_1518454250(TEXT("/Script/UnrealInterface"),
 	Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Person_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

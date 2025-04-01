@@ -14,16 +14,17 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define UNREALINTERFACE_Teacher_generated_h
 
-#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_16_INCLASS_NO_PURE_DECLS \
+#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_17_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUTeacher(); \
 	friend struct Z_Construct_UClass_UTeacher_Statics; \
 public: \
 	DECLARE_CLASS(UTeacher, UPerson, COMPILED_IN_FLAGS(0), CASTCLASS_None, TEXT("/Script/UnrealInterface"), NO_API) \
-	DECLARE_SERIALIZER(UTeacher)
+	DECLARE_SERIALIZER(UTeacher) \
+	virtual UObject* _getUObject() const override { return const_cast<UTeacher*>(this); }
 
 
-#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_16_ENHANCED_CONSTRUCTORS \
+#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	UTeacher(UTeacher&&); \
@@ -35,12 +36,12 @@ public: \
 	NO_API virtual ~UTeacher();
 
 
-#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_13_PROLOG
-#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_16_GENERATED_BODY \
+#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_14_PROLOG
+#define FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_16_INCLASS_NO_PURE_DECLS \
-	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_16_ENHANCED_CONSTRUCTORS \
+	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_17_INCLASS_NO_PURE_DECLS \
+	FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_17_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 

@@ -10,6 +10,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeTeacher() {}
 
 // Begin Cross Module References
+UNREALINTERFACE_API UClass* Z_Construct_UClass_ULessonInterface_NoRegister();
 UNREALINTERFACE_API UClass* Z_Construct_UClass_UPerson();
 UNREALINTERFACE_API UClass* Z_Construct_UClass_UTeacher();
 UNREALINTERFACE_API UClass* Z_Construct_UClass_UTeacher_NoRegister();
@@ -42,6 +43,7 @@ struct Z_Construct_UClass_UTeacher_Statics
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Id;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
+	static const UECodeGen_Private::FImplementedInterfaceParams InterfaceParams[];
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
 		TCppClassTypeTraits<UTeacher>::IsAbstract,
 	};
@@ -57,6 +59,9 @@ UObject* (*const Z_Construct_UClass_UTeacher_Statics::DependentSingletons[])() =
 	(UObject* (*)())Z_Construct_UPackage__Script_UnrealInterface,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_UTeacher_Statics::DependentSingletons) < 16);
+const UECodeGen_Private::FImplementedInterfaceParams Z_Construct_UClass_UTeacher_Statics::InterfaceParams[] = {
+	{ Z_Construct_UClass_ULessonInterface_NoRegister, (int32)VTABLE_OFFSET(UTeacher, ILessonInterface), false },  // 3040147903
+};
 const UECodeGen_Private::FClassParams Z_Construct_UClass_UTeacher_Statics::ClassParams = {
 	&UTeacher::StaticClass,
 	nullptr,
@@ -64,11 +69,11 @@ const UECodeGen_Private::FClassParams Z_Construct_UClass_UTeacher_Statics::Class
 	DependentSingletons,
 	nullptr,
 	Z_Construct_UClass_UTeacher_Statics::PropPointers,
-	nullptr,
+	InterfaceParams,
 	UE_ARRAY_COUNT(DependentSingletons),
 	0,
 	UE_ARRAY_COUNT(Z_Construct_UClass_UTeacher_Statics::PropPointers),
-	0,
+	UE_ARRAY_COUNT(InterfaceParams),
 	0x001000A0u,
 	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UTeacher_Statics::Class_MetaDataParams), Z_Construct_UClass_UTeacher_Statics::Class_MetaDataParams)
 };
@@ -92,10 +97,10 @@ UTeacher::~UTeacher() {}
 struct Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_UTeacher, UTeacher::StaticClass, TEXT("UTeacher"), &Z_Registration_Info_UClass_UTeacher, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTeacher), 1854671075U) },
+		{ Z_Construct_UClass_UTeacher, UTeacher::StaticClass, TEXT("UTeacher"), &Z_Registration_Info_UClass_UTeacher, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTeacher), 3265948869U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_1552499284(TEXT("/Script/UnrealInterface"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_4101161069(TEXT("/Script/UnrealInterface"),
 	Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Workspace_UnrealProjects_UEPart01_UnrealInterface_Source_UnrealInterface_Teacher_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
