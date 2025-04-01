@@ -1,0 +1,12 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-UnrealInterface.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Workspace\UnrealProjects\UEPart01\UnrealInterface\Intermediate\Build\Win64\x64\UnrealInterfaceEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
+"C:\Workspace\UnrealProjects\UEPart01\UnrealInterface\Intermediate\Build\Win64\x64\UnrealEditor\Development\UnrealInterface\UnrealInterface.cpp.obj"
+"C:\Workspace\UnrealProjects\UEPart01\UnrealInterface\Intermediate\Build\Win64\x64\UnrealEditor\Development\UnrealInterface\Default.rc2.res"
+/OUT:"C:\Workspace\UnrealProjects\UEPart01\UnrealInterface\Intermediate\Build\Win64\x64\UnrealEditor\Development\UnrealInterface\UnrealEditor-UnrealInterface.lib"

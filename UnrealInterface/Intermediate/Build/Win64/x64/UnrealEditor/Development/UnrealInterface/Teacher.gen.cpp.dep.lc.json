@@ -1,0 +1,23 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealinterface\\uht\\teacher.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\x64\\unrealinterfaceeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealinterface\\definitions.unrealinterface.h",
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\source\\unrealinterface\\teacher.h",
+            "c:\\program files\\epic games\\ue_5.4\\engine\\source\\runtime\\coreuobject\\public\\uobject\\noexporttypes.h",
+            "c:\\program files\\epic games\\ue_5.4\\engine\\source\\runtime\\coreuobject\\public\\uobject\\propertyaccessutil.h",
+            "c:\\program files\\epic games\\ue_5.4\\engine\\source\\runtime\\coreuobject\\public\\serialization\\testundeclaredscriptstructobjectreferences.h",
+            "c:\\program files\\epic games\\ue_5.4\\engine\\source\\runtime\\core\\public\\math\\unitconversion.h",
+            "c:\\program files\\epic games\\ue_5.4\\engine\\source\\runtime\\core\\public\\math\\unitconversion.inl",
+            "c:\\program files\\epic games\\ue_5.4\\engine\\source\\runtime\\core\\public\\internationalization\\polyglottextdata.h",
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\source\\unrealinterface\\person.h",
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealinterface\\uht\\person.generated.h",
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\unrealeditor\\inc\\unrealinterface\\uht\\teacher.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

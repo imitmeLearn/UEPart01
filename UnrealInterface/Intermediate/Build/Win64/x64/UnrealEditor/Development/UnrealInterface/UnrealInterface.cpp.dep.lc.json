@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\source\\unrealinterface\\unrealinterface.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\x64\\unrealinterfaceeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\unrealinterface\\definitions.unrealinterface.h",
+            "c:\\workspace\\unrealprojects\\uepart01\\unrealinterface\\source\\unrealinterface\\unrealinterface.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
