@@ -2,6 +2,7 @@
 
 #include "Teacher.h"
 #include "Student.h"
+#include "Staff.h"
 #include "MyGameInstance.h"
 
 UMyGameInstance::UMyGameInstance()
@@ -15,4 +16,39 @@ UMyGameInstance::UMyGameInstance()
 void UMyGameInstance::Init()
 {
 	Super::Init();
+
+	UE_LOG(LogTemp, Log, TEXT("===	//객체 생성===="));
+
+	//동적배열 TArray 템플릿 지정된.
+	TArray<UPerson*>Persons =
+	{
+		NewObject<UStudent>()
+		,NewObject<UTeacher>()
+		,NewObject<UStaff>()
+	};
+
+	UE_LOG(LogTemp, Log, TEXT("===//이름 출력===="));
+
+	for (const auto Person : Persons)
+	{
+		//인터페이스 구현 여부 확인
+		ILessonInterface* LessonInterface
+			= Cast<ILessonInterface>(Person);
+
+		if (LessonInterface)
+		{
+			UE_LOG(LogTemp, Log, TEXT("참여가능 : %s"), *Person->GetName());
+			LessonInterface->DoLesson();
+		}
+
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("참여 불가능 : %s"), *Person->GetName());
+		}
+
+		Person->GetName();
+		UE_LOG(LogTemp, Log, TEXT("구성원 이름 : %s"), *Person->GetName());
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("========================"));
 }

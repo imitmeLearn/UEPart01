@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "Person.h"
+#include "LessonInterface.h"
 
 #include "Student.generated.h"
 
@@ -12,7 +13,7 @@
  *
  */
 UCLASS()
-class UNREALINTERFACE_API UStudent : public UPerson
+class UNREALINTERFACE_API UStudent : public UPerson, public ILessonInterface
 {
 	GENERATED_BODY()
 

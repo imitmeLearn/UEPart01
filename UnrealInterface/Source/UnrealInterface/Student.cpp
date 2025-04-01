@@ -11,6 +11,6 @@ UStudent::UStudent()
 
 void UStudent::DoLesson()
 {
-	Super::DoLesson();
-	UE_LOG(LogTemp, Log, TEXT("%d 학년 %d 학생 %s 님이 수업을 듣습니다. "), Year, Id, *Name);
+	ILessonInterface::DoLesson();
+	UE_LOG(LogTemp, Log, TEXT("수업 듣기 : %s "), *Name);
 }
