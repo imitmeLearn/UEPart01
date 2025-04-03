@@ -19,7 +19,7 @@ void UMyGameInstance::Init()
 		UE_LOG(LogTemp, Log, TEXT(" 배열 값 : %d"), Item);	//출력
 	}
 
-	UE_LOG(LogTemp, Log, TEXT("==	//조건 설정해서, 삭제 return Val % 2 == 0===="));
+	UE_LOG(LogTemp, Log, TEXT("==	//조건 설정해서, 삭제 return Val/2 == 0===="));
 	IntArray.RemoveAll([](int32 Val) {return Val % 2 == 0; });
 	for (const auto& Item : IntArray)
 	{
