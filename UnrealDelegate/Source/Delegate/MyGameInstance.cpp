@@ -5,6 +5,7 @@
 #include "Staff.h"
 #include "MyGameInstance.h"
 #include "Card.h"
+#include "CourseInfo.h"
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -92,4 +93,27 @@ void UMyGameInstance::Init()
 	//UE_LOG(LogTemp, Log, TEXT("key2 :%s"), key2);
 	UE_LOG(LogTemp, Log, TEXT("key1 :%s"), *key1.ToString()); //FName 타입을 문자열로 출력하기 위해서는 ToString() 메서드를 사용해야 하고,  포인터 연산자 *를 사용하여 TCHAR* 타입으로 변환해야 한다.
 	UE_LOG(LogTemp, Log, TEXT("key2 :%s"), *key2.ToString()); //FName 타입을 문자열로 출력하기 위해서는 ToString() 메서드를 사용해야 하고,  포인터 연산자 *를 사용하여 TCHAR* 타입으로 변환해야 한다.
+
+	// 학사 정보 객체 생성.
+	CourseInfo = NewObject<UCourseInfo>(this);
+
+	// 학생 객체 생성.
+	UStudent* Student1 = NewObject<UStudent>();
+	Student1->SetName(TEXT("학생1"));
+
+	UStudent* Student2 = NewObject<UStudent>();
+	Student2->SetName(TEXT("학생2"));
+
+	UStudent* Student3 = NewObject<UStudent>();
+	Student3->SetName(TEXT("학생3"));
+
+	// 구독할 함수 등록.
+	CourseInfo->OnChanged.AddUObject(Student1, &UStudent::GetNotification);
+	CourseInfo->OnChanged.AddUObject(Student2, &UStudent::GetNotification);
+	CourseInfo->OnChanged.AddUObject(Student3, &UStudent::GetNotification);
+
+	// 발행.
+	CourseInfo->ChangeCourseInfo(SchoolName, TEXT("새로운 학사 정보"));
+
+	UE_LOG(LogTemp, Log, TEXT("======================="));
 }

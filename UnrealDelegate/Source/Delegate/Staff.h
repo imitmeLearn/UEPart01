@@ -11,7 +11,7 @@
  *
  */
 UCLASS()
-class UNREALDELEGATE_API UStaff : public UPerson
+class DELEGATE_API UStaff : public UPerson
 {
 	GENERATED_BODY()
 public:

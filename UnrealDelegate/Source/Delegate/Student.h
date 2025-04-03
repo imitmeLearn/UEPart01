@@ -13,11 +13,12 @@
  *
  */
 UCLASS()
-class UNREALDELEGATE_API UStudent : public UPerson, public ILessonInterface
+class DELEGATE_API UStudent : public UPerson, public ILessonInterface
 {
 	GENERATED_BODY()
 
 public:
 	UStudent();
 	virtual void DoLesson() override;
+	void GetNotification(const FString& InSchool, const FString& InNewCourseInfo);
 };

@@ -10,7 +10,7 @@
  *
  */
 UCLASS()
-class UNREALDELEGATE_API UPerson : public UObject
+class DELEGATE_API UPerson : public UObject
 {
 	GENERATED_BODY()
 

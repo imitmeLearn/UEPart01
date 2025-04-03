@@ -10,7 +10,7 @@
  *
  */
 UCLASS()
-class UNREALDELEGATE_API UMyGameInstance : public UGameInstance
+class DELEGATE_API UMyGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 
@@ -21,4 +21,6 @@ public:
 private:
 	UPROPERTY()
 	FString SchoolName;
+	UPROPERTY()
+	TObjectPtr<class UCourseInfo> CourseInfo;
 };

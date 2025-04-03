@@ -12,7 +12,7 @@
  *
  */
 UCLASS()
-class UNREALDELEGATE_API UTeacher : public UPerson, public ILessonInterface
+class DELEGATE_API UTeacher : public UPerson, public ILessonInterface
 {
 	GENERATED_BODY()
 

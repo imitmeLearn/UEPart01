@@ -16,7 +16,7 @@ class ULessonInterface : public UInterface
 /**
  *
  */
-class UNREALDELEGATE_API ILessonInterface
+class DELEGATE_API ILessonInterface
 {
 	GENERATED_BODY()
 
