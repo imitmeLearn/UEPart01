@@ -70,6 +70,9 @@ Delegate/Plugins/*/Binaries/*
 UnrealDelegate/Binaries/*
 UnrealDelegate/Plugins/*/Binaries/*
 
+UnrealContainer/Binaries/*
+UnrealContainer/Plugins/*/Binaries/*
+
 # Builds
 Build/*
 
@@ -94,6 +97,8 @@ UnrealInterface/Saved/*
 UnrealComposition/Saved/*
 Delegate/Saved/*
 UnrealDelegate/Saved/*
+UnrealContainer/Saved/*
+
 
 # Compiled source files for the engine to use
 Intermediate/*
@@ -121,6 +126,8 @@ Delegate/Plugins/*/Intermediate/*
 UnrealDelegate/Intermediate/*
 UnrealDelegate/Plugins/*/Intermediate/*
 
+UnrealContainer/Intermediate/*
+UnrealContainer/Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
