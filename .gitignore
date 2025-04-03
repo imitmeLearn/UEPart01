@@ -62,6 +62,9 @@ UnrealInterface/Binaries/*
 UnrealInterface/Plugins/*/Binaries/*
 UnrealComposition/Binaries/*
 UnrealComposition/Plugins/*/Binaries/*
+Delegate/Binaries/*
+Delegate/Plugins/*/Binaries/*
+
 # Builds
 Build/*
 
@@ -84,6 +87,8 @@ UnrealString/Saved/*
 ObjectReflection/Saved/*
 UnrealInterface/Saved/*
 UnrealComposition/Saved/*
+Delegate/Saved/*
+
 # Compiled source files for the engine to use
 Intermediate/*
 Plugins/*/Intermediate/*
@@ -103,6 +108,10 @@ UnrealInterface/Plugins/*/Intermediate/*
 
 UnrealComposition/Intermediate/*
 UnrealComposition/Plugins/*/Intermediate/*
+
+Delegate/Intermediate/*
+Delegate/Plugins/*/Intermediate/*
+
 
 # Cache files for the editor to use
 DerivedDataCache/*
