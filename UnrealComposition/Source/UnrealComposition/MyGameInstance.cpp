@@ -77,4 +77,19 @@ void UMyGameInstance::Init()
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("========================"));
+
+	FName key1(TEXT("TEST"));
+	FName key2(TEXT("test"));
+	UE_LOG(LogTemp, Log, TEXT("결과 :%s"), (key1 == key2 ? TEXT("same") : TEXT("Dif")));
+
+	//UE_LOG(LogTemp, Log, TEXT("key1 :%s"), TEXT("TEST"));
+	//UE_LOG(LogTemp, Log, TEXT("key1 :%s"), FName key3(TEXT("TEST")));
+	//UE_LOG(LogTemp, Log, TEXT("key1 :%s"), *key1);
+	//UE_LOG(LogTemp, Log, TEXT("key1 :%s"), &key1);
+	//UE_LOG(LogTemp, Log, TEXT("key1 :%s"), key1);
+	//UE_LOG(LogTemp, Log, TEXT("key2 :%s"), (key2));
+	//UE_LOG(LogTemp, Log, TEXT("key2 :%s"), *key2);
+	//UE_LOG(LogTemp, Log, TEXT("key2 :%s"), key2);
+	UE_LOG(LogTemp, Log, TEXT("key1 :%s"), *key1.ToString()); //FName 타입을 문자열로 출력하기 위해서는 ToString() 메서드를 사용해야 하고,  포인터 연산자 *를 사용하여 TCHAR* 타입으로 변환해야 한다.
+	UE_LOG(LogTemp, Log, TEXT("key2 :%s"), *key2.ToString()); //FName 타입을 문자열로 출력하기 위해서는 ToString() 메서드를 사용해야 하고,  포인터 연산자 *를 사용하여 TCHAR* 타입으로 변환해야 한다.
 }
