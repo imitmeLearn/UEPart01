@@ -54,4 +54,6 @@ void UMyGameInstance::Init()
 	}	//동적 배열에 자료 추가.
 
 	IntSet.Remove(2);
+
+	StudentData.Add(FStudentData(1, TEXT("장세윤"))); //구조체 입력 예시,
 }
