@@ -125,4 +125,13 @@ void UMyGameInstance::Init()
 	}
 	);
 	UE_LOG(LogTemp, Log, TEXT("중복 없는 학생 이름의 수 : %d"), StudentMapByName.Num());
+
+	UE_LOG(LogTemp, Log, TEXT("====구조체를 TSet에 저장해보기==="));
+	TSet<FStudentData> StudentsSet;
+	for (int32 ix = 0; ix < StudentCount; ix++)
+	{
+		StudentsSet.Emplace(FStudentData(ix + 1, MakeRandomName()));
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("학생 이름의 수 : %d"), StudentsSet.Num());
 }

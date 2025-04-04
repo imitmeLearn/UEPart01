@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -12,7 +12,7 @@ struct FStudentData
 {
 	GENERATED_BODY()
 	FStudentData()
-		:Order(-1), Name(TEXT("ȫ�浿"))
+		:Order(-1), Name(TEXT("홍길동"))
 	{
 	}
 
@@ -20,6 +20,13 @@ struct FStudentData
 		:Order(InOrder), Name(InName)
 	{
 	}
+	////TSet 구조체를 사용하기 위한 함수 추가.
+	//비교 연산자 오버로딩
+	bool operator==(const FStudentData& InOther) const { return Name == InOther.Name; return Order == InOther.Order; }
+	//해시 반환함수
+	friend FORCEINLINE  int32 GetTypeHash(const FStudentData& InStudentData) { return GetTypeHash(InStudentData.Order); }
+	//
+
 	UPROPERTY()
 	int32 Order = -1;
 	UPROPERTY()
