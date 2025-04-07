@@ -39,8 +39,9 @@ void UMyGameInstance::Init()
 		if (RawFileWriteAr)
 		{
 			//데이터 넣기
-			*RawFileWriteAr << RawDataSource.Order;
-			*RawFileWriteAr << RawDataSource.Name;
+			//*RawFileWriteAr << RawDataSource.Order;
+			//*RawFileWriteAr << RawDataSource.Name;
+			*RawFileWriteAr << RawDataSource;
 
 			//아카이브 닫기
 			RawFileWriteAr->Close();
@@ -59,8 +60,9 @@ void UMyGameInstance::Init()
 		if (RawFileReaderAr)
 		{
 			//데이터 읽기
-			*RawFileReaderAr << RawDataDeserialized.Order;
-			*RawFileReaderAr << RawDataDeserialized.Name;
+			//*RawFileReaderAr << RawDataDeserialized.Order;
+			//*RawFileReaderAr << RawDataDeserialized.Name;
+			*RawFileReaderAr << RawDataDeserialized;
 
 			RawFileReaderAr->Close();
 			delete RawFileReaderAr;

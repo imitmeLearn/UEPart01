@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -15,8 +15,18 @@ struct FStudentData
 		:Order(InOrder), Name(InName)
 	{
 	}
+
+	//연산자 오버로딩
+	friend FArchive& operator<<(FArchive& Archive, FStudentData& InStudentData)
+	{
+		Archive << InStudentData.Order;
+		Archive << InStudentData.Name;
+
+		return Archive;
+	}
+
 	int32 Order = -1;
-	FString Name = TEXT("ȫ�浿");
+	FString Name = TEXT("홍길동");
 };
 /**
  *
