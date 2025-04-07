@@ -2,7 +2,7 @@
 
 #include "MyGameInstance.h"
 #include "Student.h"
-
+#include "JsonObjectConverter.h"
 UMyGameInstance::UMyGameInstance()
 {
 }
@@ -124,4 +124,34 @@ void UMyGameInstance::Init()
 			);
 		}
 	}
+
+	//JSON 직렬화
+	const FString JsonDataFileName(TEXT("StudentJsonData.json"));
+
+	//경로
+	FString JsonDataAbsolutePath = FPaths::Combine(*SavedPath, *JsonDataFileName);
+	FPaths::MakeStandardFilename(JsonDataAbsolutePath);
+
+	//Json 객체 생성
+	TSharedRef<FJsonObject> JsonObjectSource = MakeShared<FJsonObject>();
+
+	//UObject -> Json 객체 변환
+	FJsonObjectConverter::UStructToJsonObject(
+		StudentSource->GetClass()
+		, StudentSource
+		, JsonObjectSource
+	);
+	//Json 객체 -> //Json  문자열
+	FString JsonString;
+	TSharedRef<TJsonWriter<TCHAR>> JsonWriterAr
+		= TJsonWriterFactory<TCHAR>::Create(&JsonString);
+
+	//Json 문자열에 직렬화 진행
+	if (FJsonSerializer::Serialize(JsonObjectSource, JsonWriterAr))
+	{
+		//파일에 저장.
+		FFileHelper::SaveStringToFile(JsonString, *JsonDataAbsolutePath);
+	}
+
+	//직렬화 태그 잘해주면, 직렬화로 열며...
 }
