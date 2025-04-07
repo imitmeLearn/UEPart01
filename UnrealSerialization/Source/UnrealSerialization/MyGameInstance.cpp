@@ -105,5 +105,23 @@ void UMyGameInstance::Init()
 			*FileWriterAr << BufferArray;
 			FileWriterAr->Close();
 		}
+		//역직렬화
+		if (TUniquePtr<FArchive> FileReaderAr = TUniquePtr<FArchive>(
+			IFileManager::Get().CreateFileReader(*ObjectDataAbsolutePath)
+		))
+		{
+			TArray<uint8> BufferArrayFromFile;
+			*FileReaderAr << BufferArrayFromFile;
+			FileReaderAr->Close();
+
+			FMemoryReader MemoryReaderAr(BufferArrayFromFile);
+			UStudent* StudentDes = NewObject<UStudent>();
+			StudentDes->Serialize(MemoryReaderAr);
+
+			UE_LOG(LogTemp, Log, TEXT("이름: %s, 순번 %d")
+				, *StudentDes->GetName()
+				, StudentDes->GetOrder()
+			);
+		}
 	}
 }
