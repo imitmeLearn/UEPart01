@@ -70,7 +70,7 @@ void UMyGameInstance::Init()
 			RawFileReaderAr = nullptr;
 
 			//출력
-			UE_LOG(LogTemp, Log, TEXT("이름: %s, 순번 %d")
+			UE_LOG(LogTemp, Log, TEXT("[RawData]이름: %s, 순번 %d")
 				, *RawDataDeserialized.Name
 				, RawDataDeserialized.Order
 			);
@@ -154,4 +154,30 @@ void UMyGameInstance::Init()
 	}
 
 	//직렬화 태그 잘해주면, 직렬화로 열며...
+
+	//Json Read.
+	FString JsonFromFile;
+	FFileHelper::LoadFileToString(JsonFromFile, *JsonDataAbsolutePath);
+
+	//Json String -> Json Object
+	TSharedRef<TJsonReader<TCHAR>> JsonReaderAr
+		= TJsonReaderFactory<TCHAR>::Create(JsonFromFile);
+	TSharedPtr<FJsonObject> JsonObjectResult;
+	if (FJsonSerializer::Deserialize(JsonReaderAr, JsonObjectResult))
+	{
+		//Josn Object->UObject
+		UStudent* JsonStudent = NewObject<UStudent>();
+		if (FJsonObjectConverter::JsonObjectToUStruct(
+			JsonObjectResult.ToSharedRef()
+			, JsonStudent->GetClass()
+			, JsonStudent
+		))
+		{
+			//TestPrint
+			UE_LOG(LogTemp, Log, TEXT("[JsonData] 이름: %s, 순번 %d")
+				, *JsonStudent->GetName()
+				, JsonStudent->GetOrder()
+			);
+		}
+	}
 }

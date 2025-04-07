@@ -9,7 +9,7 @@ public class UnrealSerialization : ModuleRules
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput"
-        ,"Json","JsonUtilities"
+        ,"Json","JsonUtilities"//for JsonData //,"Json","JsonUtilities"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
