@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyGameInstance.h"
+#include "Student.h"
 
 UMyGameInstance::UMyGameInstance()
 {
@@ -73,6 +74,36 @@ void UMyGameInstance::Init()
 				, *RawDataDeserialized.Name
 				, RawDataDeserialized.Order
 			);
+		}
+	}
+
+	//UObject 직렬화.
+	StudentSource = NewObject<UStudent>();
+	StudentSource->SetOrder(40);
+	StudentSource->SetName(TEXT("장세윤"));
+	{
+		//파일 이름
+		const FString ObjectDataFileName(TEXT("ObjectData.bin"));
+
+		//폴더 경로
+		FString ObjectDataAbsolutePath = FPaths::Combine(
+			*SavedPath
+			, *ObjectDataFileName
+		);
+
+		FPaths::MakeStandardFilename(ObjectDataAbsolutePath);
+
+		//직렬화
+		TArray<uint8> BufferArray;
+		FMemoryWriter MemoryWriterAr(BufferArray);
+		StudentSource->Serialize(MemoryWriterAr);
+
+		if (TUniquePtr<FArchive> FileWriterAr = TUniquePtr<FArchive>(
+			IFileManager::Get().CreateFileWriter(*ObjectDataAbsolutePath)
+		))
+		{
+			*FileWriterAr << BufferArray;
+			FileWriterAr->Close();
 		}
 	}
 }

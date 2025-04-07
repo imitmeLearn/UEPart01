@@ -39,4 +39,8 @@ class UNREALSERIALIZATION_API UMyGameInstance : public UGameInstance
 public:
 	UMyGameInstance();
 	virtual void Init() override;
+
+private:
+	UPROPERTY()
+	TObjectPtr<class UStudent> StudentSource;
 };
