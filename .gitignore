@@ -1,6 +1,7 @@
 # Visual Studio 2015 user specific files
 .vs/
 
+
 # Compiled Object files
 *.slo
 *.lo
@@ -73,6 +74,9 @@ UnrealDelegate/Plugins/*/Binaries/*
 UnrealContainer/Binaries/*
 UnrealContainer/Plugins/*/Binaries/*
 
+UnrealSerialization/Binaries/*
+UnrealSerialization/Plugins/*/Binaries/*
+
 # Builds
 Build/*
 
@@ -98,7 +102,7 @@ UnrealComposition/Saved/*
 Delegate/Saved/*
 UnrealDelegate/Saved/*
 UnrealContainer/Saved/*
-
+UnrealSerialization/Saved/*
 
 # Compiled source files for the engine to use
 Intermediate/*
@@ -128,6 +132,9 @@ UnrealDelegate/Plugins/*/Intermediate/*
 
 UnrealContainer/Intermediate/*
 UnrealContainer/Plugins/*/Intermediate/*
+
+UnrealSerialization/Intermediate/*
+UnrealSerialization/Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
