@@ -49,5 +49,28 @@ void UMyGameInstance::Init()
 			delete RawFileWriteAr;
 			RawFileWriteAr = nullptr;
 		}
+
+		//역질렬화 (읽기).
+		FStudentData RawDataDeserialized;
+		FArchive* RawFileReaderAr = IFileManager::Get().CreateFileReader(
+			*RawDataAbsolutePath
+		);
+
+		if (RawFileReaderAr)
+		{
+			//데이터 읽기
+			*RawFileReaderAr << RawDataDeserialized.Order;
+			*RawFileReaderAr << RawDataDeserialized.Name;
+
+			RawFileReaderAr->Close();
+			delete RawFileReaderAr;
+			RawFileReaderAr = nullptr;
+
+			//출력
+			UE_LOG(LogTemp, Log, TEXT("이름: %s, 순번 %d")
+				, *RawDataDeserialized.Name
+				, RawDataDeserialized.Order
+			);
+		}
 	}
 }
