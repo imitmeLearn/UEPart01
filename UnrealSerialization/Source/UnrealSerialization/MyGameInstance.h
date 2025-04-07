@@ -39,6 +39,8 @@ class UNREALSERIALIZATION_API UMyGameInstance : public UGameInstance
 public:
 	UMyGameInstance();
 	virtual void Init() override;
+	//패키지 저장 함수.
+	void SaveStudentPackage();
 
 private:
 	UPROPERTY()

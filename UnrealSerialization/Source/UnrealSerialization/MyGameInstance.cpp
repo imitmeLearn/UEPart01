@@ -3,6 +3,7 @@
 #include "MyGameInstance.h"
 #include "Student.h"
 #include "JsonObjectConverter.h"
+#include "UObject/SavePackage.h"
 UMyGameInstance::UMyGameInstance()
 {
 }
@@ -179,5 +180,46 @@ void UMyGameInstance::Init()
 				, JsonStudent->GetOrder()
 			);
 		}
+	}
+	//패키지 저장 함수 호출.
+	SaveStudentPackage();
+}
+
+void UMyGameInstance::SaveStudentPackage()
+{
+	//패키지 만들고,
+	UPackage* StudentPackage = CreatePackage(TEXT("/Game/Student"));
+	////패키지 구성을 위한 플래그 지정.
+	EObjectFlags ObjectFlag = RF_Public | RF_Standalone;
+
+	//UObject 만들고,
+	UStudent* TopStudent = NewObject<UStudent>(
+		StudentPackage
+		, UStudent::StaticClass()
+		, TEXT("TopStudent")
+		, ObjectFlag
+	);
+
+	//패키지에 UObject 넣기!
+	////값 설정
+	TopStudent->SetOrder(40);
+	TopStudent->SetName(TEXT("장세윤"));
+
+	//패키지 저장
+	const FString PackageFileName = FPackageName::LongPackageNameToFilename(
+		TEXT("/Game/Student")
+		, FPackageName::GetAssetPackageExtension()
+	);
+
+	FSavePackageArgs SaveArgs;
+	SaveArgs.TopLevelFlags = ObjectFlag;
+	if (UPackage::SavePackage(
+		StudentPackage
+		, nullptr
+		, *PackageFileName
+		, SaveArgs
+	))
+	{
+		UE_LOG(LogTemp, Log, TEXT("패키지 성공적으로 저장됨."));
 	}
 }
