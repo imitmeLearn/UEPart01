@@ -182,12 +182,42 @@ void UMyGameInstance::Init()
 		}
 	}
 	//패키지 저장 함수 호출.
-	UE_LOG(LogTemp, Log, TEXT("패키지 저장 호출."));
+	UE_LOG(LogTemp, Log, TEXT("<패키지 저장 호출.>"));
 	SaveStudentPackage();
 
 	//패키기 에셋 로드 함수 호출.
-	UE_LOG(LogTemp, Log, TEXT("패키지 에셋 로드 호출."));
+	UE_LOG(LogTemp, Log, TEXT("<패키지 에셋 로드 호출.>"));
 	LoadStudentPackage();
+
+	//비동기 에셋 로드
+	//비동기 처리 시, 끝났는지 확인을 위한, 콜백(Callback)함수가 꼭! 필요하다!
+	///Script/UnrealSerialization.Student'/Game/Student.Student'
+	UE_LOG(LogTemp, Log, TEXT("<비동기 에셋 로드 호출.>"));
+	FString ObjectPath = FString::Printf(
+		TEXT("%s.%s")
+		, TEXT("/Game/Student")	//패키지 정보
+		, TEXT("Student")	//에셋 정보
+	);
+
+	Handle = StreamableManager.RequestAsyncLoad(
+		ObjectPath	//경로
+		, [&]()	//참조 콜백 // 콜백 람다 씀. // 캡쳐한 줄
+	{
+		//값 출력
+		UStudent* Student = Cast<UStudent>(Handle->GetLoadedAsset());
+		if (Student)
+		{
+			UE_LOG(LogTemp, Log, TEXT("[AsyncLoad] 이름: %s, 순번 %d")
+				, *Student->GetName()
+				, Student->GetOrder()
+			);
+		}
+
+		//핸들 해제
+		Handle->ReleaseHandle();
+		Handle.Reset();
+	}	//,[](){}
+	);
 }
 
 void UMyGameInstance::SaveStudentPackage()

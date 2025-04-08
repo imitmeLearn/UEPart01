@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Engine/StreamableManager.h"
 #include "MyGameInstance.generated.h"
 
 struct FStudentData
@@ -46,4 +47,10 @@ public:
 private:
 	UPROPERTY()
 	TObjectPtr<class UStudent> StudentSource;
+
+	// 애셋 로딩에 사용할 FStreamableManager.
+	FStreamableManager StreamableManager;
+
+	// 애셋 로딩 처리를 위한 핸들.
+	TSharedPtr<FStreamableHandle> Handle;
 };
