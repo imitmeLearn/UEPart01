@@ -41,6 +41,7 @@ public:
 	virtual void Init() override;
 	//패키지 저장 함수.
 	void SaveStudentPackage();
+	void LoadStudentPackage();
 
 private:
 	UPROPERTY()

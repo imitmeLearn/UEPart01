@@ -182,7 +182,12 @@ void UMyGameInstance::Init()
 		}
 	}
 	//패키지 저장 함수 호출.
+	UE_LOG(LogTemp, Log, TEXT("패키지 저장 호출."));
 	SaveStudentPackage();
+
+	//패키기 에셋 로드 함수 호출.
+	UE_LOG(LogTemp, Log, TEXT("패키지 에셋 로드 호출."));
+	LoadStudentPackage();
 }
 
 void UMyGameInstance::SaveStudentPackage()
@@ -228,5 +233,34 @@ void UMyGameInstance::SaveStudentPackage()
 	))
 	{
 		UE_LOG(LogTemp, Log, TEXT("패키지 성공적으로 저장됨."));
+	}
+}
+
+void UMyGameInstance::LoadStudentPackage()
+{
+	//패키지 경로 설정
+	UPackage* StudentPackage = LoadPackage(
+		nullptr
+		, TEXT("/Game/Student")
+		, LOAD_None
+	);
+
+	//패키지 로드 실패.
+	if (!StudentPackage) {
+		UE_LOG(LogTemp, Log, TEXT("패키지 찾을 수 없음."));
+		return;
+	}
+
+	//패키지 완전히 로드 처리
+	StudentPackage->FullyLoad();
+
+	//에셋 로드
+	UStudent* Student = FindObject<UStudent>(StudentPackage, TEXT("Student"));
+	if (Student)
+	{
+		UE_LOG(LogTemp, Log, TEXT("[FindObject Asset] 이름: %s, 순번 %d")
+			, *Student->GetName()
+			, Student->GetOrder()
+		);
 	}
 }
