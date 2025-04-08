@@ -187,8 +187,15 @@ void UMyGameInstance::Init()
 
 void UMyGameInstance::SaveStudentPackage()
 {
+	//에셋 저장하기 전에 완전히 로드되도록 처리.
+	//ㄴ저장하려고 시도할때, 패키지 만들다 오류나는것이기에,  사전에 완전히 로드되도록 처리해줘야 한다.
+	UPackage* StudentPackage = LoadPackage(nullptr, TEXT("/Game/Student"), LOAD_None);
+	if (StudentPackage) {
+		StudentPackage->FullyLoad();
+	}
+
 	//패키지 만들고,
-	UPackage* StudentPackage = CreatePackage(TEXT("/Game/Student"));
+	StudentPackage = CreatePackage(TEXT("/Game/Student"));
 	////패키지 구성을 위한 플래그 지정.
 	EObjectFlags ObjectFlag = RF_Public | RF_Standalone;
 
@@ -196,7 +203,7 @@ void UMyGameInstance::SaveStudentPackage()
 	UStudent* TopStudent = NewObject<UStudent>(
 		StudentPackage
 		, UStudent::StaticClass()
-		, TEXT("TopStudent")
+		, TEXT("Student") //패키지 이름과 맞춰줘야 에디터에 나온다
 		, ObjectFlag
 	);
 
