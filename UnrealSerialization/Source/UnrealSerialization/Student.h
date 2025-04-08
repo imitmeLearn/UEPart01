@@ -22,9 +22,9 @@ public:
 	FString GetName() const { return Name; }
 	void SetName(const FString& InName) { Name = InName; }
 private:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	int32 Order;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere)
 	FString Name;
 };
