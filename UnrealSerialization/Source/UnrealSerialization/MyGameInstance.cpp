@@ -6,6 +6,21 @@
 #include "UObject/SavePackage.h"
 UMyGameInstance::UMyGameInstance()
 {
+	//강참조 : 많이 쓰게 될 방법 중 하나!
+	///Script/UnrealSerialization.Student'/Game/Student.Student'
+	FString ObjectPath = TEXT("/Script/UnrealSerialization.Student'/Game/Student.Student'");
+
+	//에셋 로드
+	static ConstructorHelpers::FObjectFinder<UStudent> UASSET_Student(*ObjectPath);
+
+	//성공확인
+	if (UASSET_Student.Succeeded())
+	{
+		UE_LOG(LogTemp, Log, TEXT("[Constructor] 이름: %s, 순번 %d")
+			, *UASSET_Student.Object->GetName()
+			, UASSET_Student.Object->GetOrder()
+		);
+	}
 }
 
 void UMyGameInstance::Init()
