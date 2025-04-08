@@ -77,6 +77,9 @@ UnrealContainer/Plugins/*/Binaries/*
 UnrealSerialization/Binaries/*
 UnrealSerialization/Plugins/*/Binaries/*
 
+UnrealBuildSystem/Binaries/*
+UnrealBuildSystem/Plugins/*/Binaries/*
+
 # Builds
 Build/*
 
@@ -103,6 +106,7 @@ Delegate/Saved/*
 UnrealDelegate/Saved/*
 UnrealContainer/Saved/*
 UnrealSerialization/Saved/*
+UnrealBuildSystem/Saved/*
 
 # Compiled source files for the engine to use
 Intermediate/*
@@ -135,6 +139,9 @@ UnrealContainer/Plugins/*/Intermediate/*
 
 UnrealSerialization/Intermediate/*
 UnrealSerialization/Plugins/*/Intermediate/*
+
+UnrealBuildSystem/Intermediate/*
+UnrealBuildSystem/Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
