@@ -80,6 +80,11 @@ UnrealSerialization/Plugins/*/Binaries/*
 UnrealBuildSystem/Binaries/*
 UnrealBuildSystem/Plugins/*/Binaries/*
 
+ArenaBattleDemo/Binaries/*
+ArenaBattleDemo/Plugins/*/Binaries/*
+
+
+
 # Builds
 Build/*
 
@@ -107,6 +112,7 @@ UnrealDelegate/Saved/*
 UnrealContainer/Saved/*
 UnrealSerialization/Saved/*
 UnrealBuildSystem/Saved/*
+ArenaBattleDemo/Saved/*
 
 # Compiled source files for the engine to use
 Intermediate/*
@@ -142,6 +148,9 @@ UnrealSerialization/Plugins/*/Intermediate/*
 
 UnrealBuildSystem/Intermediate/*
 UnrealBuildSystem/Plugins/*/Intermediate/*
+
+ArenaBattleDemo/Intermediate/*
+ArenaBattleDemo/Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
