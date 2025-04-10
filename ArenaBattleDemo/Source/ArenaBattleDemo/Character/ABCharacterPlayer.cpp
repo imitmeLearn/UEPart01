@@ -94,8 +94,27 @@ void AABCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 void AABCharacterPlayer::Move(const FInputActionValue& Value)
 {
+	FVector2D Movement = Value.Get<FVector2D>();	//입력값 읽기.
+
+	//컨트롤러의 회전 값.
+	FRotator Rotation = GetController()->GetControlRotation();
+	FRotator YawRotation(0.f, Rotation.Yaw, 0.f);	//요만 뜯는 이유는,
+
+	//방향구하기.
+	FVector ForwardVector = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	FVector RightVector = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	//무브먼트 컴포넌트에 값 전달//결국 하고 싶은건!!!!! 이거
+	AddMovementInput(ForwardVector, Movement.Y);
+	AddMovementInput(RightVector, Movement.X);
 }
 
 void AABCharacterPlayer::Look(const FInputActionValue& Value)
 {
+	//입력 값 읽기.
+	FVector2D LookVector = Value.Get<FVector2D>();
+
+	//컨트롤러에 회전 추가.
+	AddControllerYawInput(LookVector.X);
+	AddControllerPitchInput(LookVector.Y);
 }
