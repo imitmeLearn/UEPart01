@@ -55,7 +55,6 @@ AABCharacterPlayer::AABCharacterPlayer()
 	Camera->SetupAttachment(SpringArm);
 
 	//Input
-
 	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_ShoulderMove.IA_ShoulderMove"));
 	if (ShoulderMoveActionRef.Object)
 	{
@@ -85,11 +84,17 @@ AABCharacterPlayer::AABCharacterPlayer()
 	{
 		ChangeControlAction = ChangeControlActionRef.Object;
 	}
+
+	//초기 설정
+	CurrentCharacterControlType = ECharacterControlType::Quarter;
 }
 
 void AABCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//입력설정
+	SetCharacterControl(CurrentCharacterControlType);
 }
 
 void AABCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
