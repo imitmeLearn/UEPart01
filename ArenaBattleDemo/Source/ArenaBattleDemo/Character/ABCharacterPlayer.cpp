@@ -9,8 +9,20 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include "GameFramework/CharacterMovementComponent.h"
+
 AABCharacterPlayer::AABCharacterPlayer()
 {
+	//컨트롤러의 회전을 받아서, 설정하는 모드를 모두 해제.
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	//무브먼트 설정.
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 720.f, 0.f);
+	GetCharacterMovement()->JumpZVelocity = 600.f; 	//점프
+
 	//컴포넌트 설정
 	GetCapsuleComponent()->SetCapsuleHalfHeight(88.f);
 	GetMesh()->SetRelativeLocationAndRotation(
