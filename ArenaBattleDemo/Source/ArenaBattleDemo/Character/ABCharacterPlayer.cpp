@@ -55,19 +55,19 @@ AABCharacterPlayer::AABCharacterPlayer()
 	Camera->SetupAttachment(SpringArm);
 
 	//Input
-	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_ShoulderMove.IA_ShoulderMove"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Shoulder_Move.IA_Shoulder_Move"));
 	if (ShoulderMoveActionRef.Object)
 	{
 		ShoulderMoveAction = ShoulderMoveActionRef.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderLookActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_ShoulderLook.IA_ShoulderLook"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderLookActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Shoulder_Look.IA_Shoulder_Look"));
 	if (ShoulderLookActionRef.Object)
 	{
 		ShoulderLookAction = ShoulderLookActionRef.Object;
 	}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> QuarterMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_QuarterMove.IA_QuarterMove"));
+	static ConstructorHelpers::FObjectFinder<UInputAction> QuarterMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Quarter_Move.IA_Quarter_Move"));
 	if (QuarterMoveActionRef.Object)
 	{
 		QuarterMoveAction = QuarterMoveActionRef.Object;
@@ -109,7 +109,6 @@ void AABCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	EnhancedInputComponent->BindAction(ShoulderMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderMove);
 	EnhancedInputComponent->BindAction(ShoulderLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderLook);
 	EnhancedInputComponent->BindAction(QuarterMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuarterMove);
-	EnhancedInputComponent->BindAction(QuarterLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuarterLook);
 }
 
 void AABCharacterPlayer::SetCharacterControl(ECharacterControlType NewCharacterControlType)
@@ -233,7 +232,4 @@ void AABCharacterPlayer::QuarterMove(const FInputActionValue& Value)
 
 	// 입력에 따른 방향으로 이동하도록 입력 전달.
 	AddMovementInput(MoveDirection, MovementVectorSize);
-}
-void AABCharacterPlayer::QuarterLook(const FInputActionValue& Value)
-{
 }

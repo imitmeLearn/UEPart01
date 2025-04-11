@@ -30,7 +30,6 @@ protected:
 	void ShoulderMove(const FInputActionValue& Value);
 	void ShoulderLook(const FInputActionValue& Value);
 	void QuarterMove(const FInputActionValue& Value);
-	void QuarterLook(const FInputActionValue& Value);
 	void QuarterMove_mujisung(const FInputActionValue& Value);
 	//void Jump(const FInputActionValue& Value);	//이건 언리얼에서 제공하는 걸로 할거임.
 
