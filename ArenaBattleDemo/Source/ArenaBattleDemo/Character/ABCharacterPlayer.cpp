@@ -80,9 +80,15 @@ AABCharacterPlayer::AABCharacterPlayer()
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> ChangeControlActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_ChangeControl.IA_ChangeControl"));
-	if (JumpActionRef.Object)
+	if (ChangeControlActionRef.Object)
 	{
 		ChangeControlAction = ChangeControlActionRef.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> AttackActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Attack.IA_Attack"));
+	if (AttackActionRef.Object)
+	{
+		AttackAction = AttackActionRef.Object;
 	}
 
 	//초기 설정
@@ -106,6 +112,7 @@ void AABCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this
 		, &ACharacter::Jump/*//캐릭터가 가지고 있는 기본 함수. 연결!*/);
 	EnhancedInputComponent->BindAction(ChangeControlAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ChangeCharacterControl);
+	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::Attack);
 	EnhancedInputComponent->BindAction(ShoulderMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderMove);
 	EnhancedInputComponent->BindAction(ShoulderLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderLook);
 	EnhancedInputComponent->BindAction(QuarterMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuarterMove);
@@ -202,6 +209,11 @@ void AABCharacterPlayer::QuarterMove_mujisung(const FInputActionValue& Value)
 
 	////입력에 따른 방향으로 이동하도록, 입력전달
 	AddMovementInput(MoveDirection, MovementVectorSize);
+}
+void AABCharacterPlayer::Attack()
+{
+	//공격 입력 처리 함수 호출
+	ProcessComboCommand();
 }
 void AABCharacterPlayer::QuarterMove(const FInputActionValue& Value)
 {

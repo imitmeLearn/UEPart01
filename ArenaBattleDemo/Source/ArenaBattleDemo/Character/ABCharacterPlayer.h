@@ -32,6 +32,7 @@ protected:
 	void QuarterMove(const FInputActionValue& Value);
 	void QuarterMove_mujisung(const FInputActionValue& Value);
 	//void Jump(const FInputActionValue& Value);	//이건 언리얼에서 제공하는 걸로 할거임.
+	void Attack();
 
 	//Camera Section
 protected:
@@ -49,6 +50,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ChangeControlAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UInputAction> AttackAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UInputAction> ShoulderLookAction;
