@@ -3,6 +3,7 @@
 #include "Character/ABCharacterBase.h"
 #include "ABCharacterControlData.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "ABComboActionData.h"
 
 // Sets default values
 AABCharacterBase::AABCharacterBase()
@@ -84,6 +85,10 @@ void AABCharacterBase::ComboActionBegin()
 		FOnMontageEnded EndDelegate;
 		EndDelegate.BindUObject(this, &AABCharacterBase::ComboActionEnd);
 		AnimInstance->Montage_SetEndDelegate(EndDelegate, ComboActionMontage);
+
+		//콤보 확인을 위한 타이머 설정.
+		ComboTimerHandle.Invalidate();
+		SetComboCheckTimer();
 	}
 }
 
@@ -98,4 +103,66 @@ void AABCharacterBase::ComboActionEnd(UAnimMontage* TargetMontage, bool IsProper
 
 	//캐릭터 무브먼트 컴포넌트 모드 복구
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+}
+
+void AABCharacterBase::SetComboCheckTimer()
+{
+	//현재 재생중인 콤보 인덱스
+	int32 ComboIndex = CurrentCombo - 1;
+
+	//콤보 인덱스 값 검증
+	ensure(ComboActionData->EffectiveFrameCount.IsValidIndex(ComboIndex));
+
+	//콤보 시간 계산(확인)
+	const float AttackSpeedRate = 1.f;
+	float ComboEffectiveTime = (ComboActionData->EffectiveFrameCount[ComboIndex] / ComboActionData->FrameRate) / AttackSpeedRate;
+
+	//타이머 설정
+	if (ComboEffectiveTime > 0.f)
+	{
+		//타이머 설정
+		GetWorld()->GetTimerManager().SetTimer(
+			ComboTimerHandle					//1.설정할 타이머 핸들
+			, this								//2.타이머에 설정한 시간이 모두 지냈을 떄, 실행될 함수의 주인.
+			, &AABCharacterBase::ComboCheck	//3.타이머에 연동해 실행할 함수 포인터.
+			, ComboEffectiveTime				//4.타이머 시간
+			, false								//5. 반복여부
+		);
+	}
+}
+
+void AABCharacterBase::ComboCheck()
+{
+	//타이머 핸들 무효화(초기화).
+	ComboTimerHandle.Invalidate();
+
+	//이전 공격 입력이 들어왔는지 확인.
+	if (HasNextComboCommand)
+	{
+		//몽타주 점프 처리.
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+		if (AnimInstance)
+		{
+			CurrentCombo = FMath::Clamp(
+				CurrentCombo + 1
+				, 1
+				, ComboActionData->MaxComboCount
+			);
+
+			//점프할 섹션의 이름 설정(예: ComboAttack2)
+			FName NextSection = *FString::Printf(
+				TEXT("%s%d")
+				, *ComboActionData->MontageSectionNamePrefix		//접두어? - 데이터 에셋 설정에 들어있음.
+				, CurrentCombo									//바뀌는 값.
+			);
+			//섹션 점프
+			AnimInstance->Montage_JumpToSection(NextSection, ComboActionMontage);
+
+			//다음 콤보 공격을 위한 타이머 설정.
+			SetComboCheckTimer();
+
+			//콤보 공격 입력 플래그 초기화
+			HasNextComboCommand = false;
+		}
+	}
 }

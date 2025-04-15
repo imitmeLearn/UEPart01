@@ -35,6 +35,10 @@ protected:
 	// 애님 몽타주에서 제공하는 델리게이트와 파라미터 맞춤.
 	void ComboActionEnd(class UAnimMontage* TargetMontage, bool IsProperlyEnded);
 
+	//콤보 타이머 설정 함수.
+	void SetComboCheckTimer();
+	void ComboCheck();
+
 protected:
 	UPROPERTY(EditAnywhere, Category = CharacterControl, meta = (AllowPrivateAccess = "true"))
 	TMap<ECharacterControlType, class UABCharacterControlData*> CharacterControlManager;
@@ -45,7 +49,7 @@ protected:
 
 	//콤보처리 시 사용할 데이터 에셋.
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UABCharacterControlData> ComboActionData;
+	TObjectPtr<class UABComboActionData> ComboActionData;
 
 	//현재 재생중인 콤보 단계/
 	//0-> 콤보 시작하지 않은, 1,2,3,4코보가 시작됨.
