@@ -4,17 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interface/ABAnimationAttackInterface.h"
+
 #include "ABCharacterBase.generated.h"
 
 UENUM()
-enum class ECharacterControlType : uint8
+enum class ECharacterControlType: uint8
 {
 	Shoulder
-	, Quarter
+	,Quarter
 };
 
 UCLASS()
-class ARENABATTLEDEMO_API AABCharacterBase : public ACharacter
+class ARENABATTLEDEMO_API AABCharacterBase: public ACharacter,public IABAnimationAttackInterface
 {
 	GENERATED_BODY()
 public:
@@ -22,7 +24,7 @@ public:
 	AABCharacterBase();
 
 	virtual void SetCharacterControlData(const class UABCharacterControlData* InCharacterControlData);
-
+	virtual void AttackHitCheck() override;	//공격 감지 함수 (애님 노티파이로부터 호출됨.)
 protected:
 	//컴보 액션 처리 함수.
 	//공격 처음 재생할 떄와 콤보 액션 처리를 분기.
@@ -33,23 +35,23 @@ protected:
 
 	// 콤보가 종료될 때 호출될 함수.
 	// 애님 몽타주에서 제공하는 델리게이트와 파라미터 맞춤.
-	void ComboActionEnd(class UAnimMontage* TargetMontage, bool IsProperlyEnded);
+	void ComboActionEnd(class UAnimMontage* TargetMontage,bool IsProperlyEnded);
 
 	//콤보 타이머 설정 함수.
 	void SetComboCheckTimer();
 	void ComboCheck();
 
 protected:
-	UPROPERTY(EditAnywhere, Category = CharacterControl, meta = (AllowPrivateAccess = "true"))
-	TMap<ECharacterControlType, class UABCharacterControlData*> CharacterControlManager;
+	UPROPERTY(EditAnywhere,Category = CharacterControl,meta = (AllowPrivateAccess = "true"))
+		TMap<ECharacterControlType,class UABCharacterControlData*> CharacterControlManager;
 
 	//공격몽타주 에셋
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Animation, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UAnimMontage> ComboActionMontage;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = Animation,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UAnimMontage> ComboActionMontage;
 
 	//콤보처리 시 사용할 데이터 에셋.
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UABComboActionData> ComboActionData;
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category = Attack,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UABComboActionData> ComboActionData;
 
 	//현재 재생중인 콤보 단계/
 	//0-> 콤보 시작하지 않은, 1,2,3,4코보가 시작됨.
