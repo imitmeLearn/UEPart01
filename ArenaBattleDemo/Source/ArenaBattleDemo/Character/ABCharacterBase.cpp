@@ -6,6 +6,7 @@
 #include "ABComboActionData.h"
 #include "Physics/ABCollision.h"
 #include "Components/CapsuleComponent.h"
+#include "Engine/DamageEvents.h"
 
 // Sets default values
 AABCharacterBase::AABCharacterBase()
@@ -50,7 +51,7 @@ void AABCharacterBase::AttackHitCheck()
 	//캐릭터 몸통에서 약간 앞으로 (캡슐의 반지름 만큼) 설정.
 	FVector Start = GetActorLocation() + GetActorForwardVector() * GetCapsuleComponent()->GetScaledCapsuleRadius();
 
-	const float AttackRange = 50.f;	//공격거리
+	const float AttackRange = 150.f;	//공격거리
 	FVector End = Start + GetActorForwardVector() * AttackRange;
 
 	FCollisionQueryParams Params(
@@ -59,11 +60,11 @@ void AABCharacterBase::AttackHitCheck()
 		,this							// 세번째 인자: 무시할 액터 목록.
 	);
 
-	const float AttackRadius = 50.f;	//트레이스에 사용할 구체의 반지름
+	const float AttackRadius = 30.f;	//트레이스에 사용할 구체의 반지름
 
 	FHitResult OutHitResult;	//트레이스를 호라용해 충돌 검사
 
-	bool HitDetexted =
+	bool HitDetected =
 		GetWorld()->SweepSingleByChannel(
 			OutHitResult
 			,Start
@@ -75,10 +76,46 @@ void AABCharacterBase::AttackHitCheck()
 		);
 
 	///충돌 감지된 경우의 처리.
-	if(HitDetexted)
+	if(HitDetected)
 	{
-		//데이미 전달
+		const float AttackDamage = 30.f;	//데미지 양
+		FDamageEvent DamageEvent;	//데이미 이벤트
+
+		//데미지 전달
+		OutHitResult.GetActor()->TakeDamage(
+			AttackDamage
+			,DamageEvent
+			,GetController()
+			,this
+		);
 	}
+
+	////충돌 디버그 (시각적으로 확인할 수 있도록)
+	#if ENABLE_DRAW_DEBUG
+	FVector CapsuleOrigin = Start + (End - Start) * 0.5f;	//캡슐의 중심 위치.
+	float CapsuleHalfHeight = AttackRange * 0.5f;			//캡슐 높이 절반 값
+	FColor DrawColor = HitDetected ? FColor::Green : FColor::Red;	//표시할 색상(안 맞으면 - 빨강, 맞았으면 -초록)'
+	DrawDebugCapsule(
+		GetWorld()
+		,CapsuleOrigin
+		,CapsuleHalfHeight
+		,AttackRadius
+		,FRotationMatrix::MakeFromX(GetActorForwardVector()).ToQuat()
+		,DrawColor
+		,false
+		,5.f
+	);																//캡슐 그리기
+
+	#endif // ENABLE_DRAW_DEBUG
+}
+
+float AABCharacterBase::TakeDamage(float DamageAmount,FDamageEvent const & DamageEvent,AController * EventInstigator,AActor * DamageCauser)
+{
+	Super::TakeDamage(DamageAmount,DamageEvent,EventInstigator,DamageCauser);
+
+	//Todo: 맞으면, 바로 죽도록 처리.
+
+	return DamageAmount;
 }
 
 void AABCharacterBase::ProcessComboCommand()
