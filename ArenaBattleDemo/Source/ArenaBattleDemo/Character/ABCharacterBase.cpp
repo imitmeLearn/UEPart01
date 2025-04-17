@@ -14,6 +14,9 @@ AABCharacterBase::AABCharacterBase()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	GetCapsuleComponent()->SetCollisionProfileName(CPROFILE_ABCAPSULE);		//컴포넌트 설정. 물리에서 만든 매크로 CPROFILE_ABCAPSULE
+	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));	//메시의 콜리전은 NOCollision 설정 (주로 렉돌에 사용됨).
+
 	static ConstructorHelpers::FObjectFinder<UABCharacterControlData> ShoulderDataRef(TEXT("/Game/ArenaBattle/CharacterControl/ABC_Shoulder.ABC_Shoulder"));
 	if(ShoulderDataRef.Object)
 	{
@@ -30,6 +33,20 @@ AABCharacterBase::AABCharacterBase()
 			ECharacterControlType::Quarter,
 			QuarterDataRef.Object
 		);
+	}
+
+	//콤보 액션 몽타주 에셋 설정.
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> ComboActionMontageRef(TEXT("/Game/ArenaBattle/Animation/AM_ComboAttack.AM_ComboAttack"));
+	if(ComboActionMontageRef.Object)
+	{
+		ComboActionMontage = ComboActionMontageRef.Object;
+	}
+
+	//콤보 액션 데이터 에셋 설정.
+	static ConstructorHelpers::FObjectFinder<UABComboActionData> ComboActionDataRef(TEXT("/Game/ArenaBattle/ComboAction/ABA_ComboAction.ABA_ComboAction"));
+	if(ComboActionDataRef.Object)
+	{
+		ComboActionData = ComboActionDataRef.Object;
 	}
 }
 
@@ -100,7 +117,7 @@ void AABCharacterBase::AttackHitCheck()
 		,CapsuleOrigin
 		,CapsuleHalfHeight
 		,AttackRadius
-		,FRotationMatrix::MakeFromX(GetActorForwardVector()).ToQuat()
+		,FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat()
 		,DrawColor
 		,false
 		,5.f
