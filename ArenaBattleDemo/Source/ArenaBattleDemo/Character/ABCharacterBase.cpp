@@ -4,6 +4,8 @@
 #include "ABCharacterControlData.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "ABComboActionData.h"
+#include "Physics/ABCollision.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AABCharacterBase::AABCharacterBase()
@@ -44,6 +46,39 @@ void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* In
 void AABCharacterBase::AttackHitCheck()
 {
 	UE_LOG(LogTemp,Log,TEXT("HIT!!"));
+	////충돌시작지점 계싼
+	//캐릭터 몸통에서 약간 앞으로 (캡슐의 반지름 만큼) 설정.
+	FVector Start = GetActorLocation() + GetActorForwardVector() * GetCapsuleComponent()->GetScaledCapsuleRadius();
+
+	const float AttackRange = 50.f;	//공격거리
+	FVector End = Start + GetActorForwardVector() * AttackRange;
+
+	FCollisionQueryParams Params(
+		SCENE_QUERY_STAT(Attack)		// SCENE_QUERY_STAT: 언리얼에서 지원하는 분석 툴에 태그를 추가.
+		,false							// 두번째 인자: 복잡한 형태의 충돌체를 감지할 지 여부.
+		,this							// 세번째 인자: 무시할 액터 목록.
+	);
+
+	const float AttackRadius = 50.f;	//트레이스에 사용할 구체의 반지름
+
+	FHitResult OutHitResult;	//트레이스를 호라용해 충돌 검사
+
+	bool HitDetexted =
+		GetWorld()->SweepSingleByChannel(
+			OutHitResult
+			,Start
+			,End
+			,FQuat::Identity
+			,CCHANNEL_ABACTION
+			,FCollisionShape::MakeSphere(AttackRadius)
+			,Params
+		);
+
+	///충돌 감지된 경우의 처리.
+	if(HitDetexted)
+	{
+		//데이미 전달
+	}
 }
 
 void AABCharacterBase::ProcessComboCommand()
