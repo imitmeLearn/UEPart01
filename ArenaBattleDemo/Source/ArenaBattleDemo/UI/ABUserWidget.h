@@ -14,6 +14,13 @@ class ARENABATTLEDEMO_API UABUserWidget: public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	FORCEINLINE void SetOwningActor (AActor* NewOwner) {
+		OwningActor = NewOwner;
+	}
 
+protected:
+	// 위젯을 소유하는 액터 참조 변수.
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = Actor)
+		TObjectPtr<AActor> OwningActor;
 protected:
 };

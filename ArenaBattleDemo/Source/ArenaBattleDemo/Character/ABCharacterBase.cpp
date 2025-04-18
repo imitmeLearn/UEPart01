@@ -11,6 +11,8 @@
 #include "CharacterStat/ABCharacterStatComponent.h"
 #include "Components/WidgetComponent.h"
 
+#include "UI/ABWidgetComponent.h"
+
 // Sets default values
 AABCharacterBase::AABCharacterBase()
 {
@@ -90,7 +92,7 @@ AABCharacterBase::AABCharacterBase()
 
 	//..CreateDefaultSubobject
 	Stat = CreateDefaultSubobject<UABCharacterStatComponent>(TEXT("Stat"));	//Stat Component
-	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));		//Widget Component
+	HpBar = CreateDefaultSubobject<UABWidgetComponent>(TEXT("Widget"));		//Widget Component
 
 	//컴포넌트 계층 설정 및 상대의 위치 설정(머리 위로 보일 수 있도록)
 	HpBar->SetupAttachment(GetMesh());
