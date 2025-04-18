@@ -82,4 +82,11 @@ protected:
 
 	//죽은 뒤에 액터를 제거하기 전 까지 대기할 시간 값.
 	float DeadEventDelayTime = 5.f;
+
+protected:	//Stat/Widget Section
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = Stat,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UABCharacterStatComponent> Stat;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = Widget,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UWidgetComponent> HpBar;
 };

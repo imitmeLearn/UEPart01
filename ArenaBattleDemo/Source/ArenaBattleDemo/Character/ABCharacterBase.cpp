@@ -8,6 +8,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Engine/DamageEvents.h"
 
+#include "CharacterStat/ABCharacterStatComponent.h"
+#include "Components/WidgetComponent.h"
+
 // Sets default values
 AABCharacterBase::AABCharacterBase()
 {
@@ -41,7 +44,7 @@ AABCharacterBase::AABCharacterBase()
 		GetMesh()->SetSkeletalMesh(CharacterMesh.Object);
 	}
 	// Animation Blueprint 설정.
-	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnim(TEXT("/Game/ArenaBattle/Animation/ABP_ABCharacter.ABP_ABCharacter"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnim(TEXT("/Game/ArenaBattle/Animation/ABP_ABCharacter.ABP_ABCharacter_C"));
 	if(CharacterAnim.Class)
 	{
 		GetMesh()->SetAnimClass(CharacterAnim.Class);
@@ -83,6 +86,24 @@ AABCharacterBase::AABCharacterBase()
 	if(DeadMontageRef.Object)
 	{
 		DeadMontage = DeadMontageRef.Object;
+	}
+
+	//..CreateDefaultSubobject
+	Stat = CreateDefaultSubobject<UABCharacterStatComponent>(TEXT("Stat"));	//Stat Component
+	HpBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));		//Widget Component
+
+	//컴포넌트 계층 설정 및 상대의 위치 설정(머리 위로 보일 수 있도록)
+	HpBar->SetupAttachment(GetMesh());
+	HpBar->SetRelativeLocation(FVector(0.f,0.f,200.f));
+
+	//사용할 위젯 클래스 정보 설정.
+	static ConstructorHelpers::FClassFinder<UUserWidget> HpBarWidgetRef(TEXT("/Game/ArenaBattle/UI/WBP_HPBar.WBP_HPBar_C"));
+	if(HpBarWidgetRef.Class)
+	{
+		HpBar->SetWidgetClass(HpBarWidgetRef.Class);				//위젯 컴포넌트는 위젯의 클래스 정보를 바탕으로 자체적으로 인스턴스를 생성함.
+		HpBar->SetWidgetSpace(EWidgetSpace::Screen);				//2d 모드로 그리기
+		HpBar->SetDrawSize(FVector2D(150.f,15.f));					//크기설정
+		HpBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);	//콜리전 끄기
 	}
 }
 
