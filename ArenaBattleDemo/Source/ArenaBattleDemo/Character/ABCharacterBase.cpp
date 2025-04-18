@@ -14,8 +14,38 @@ AABCharacterBase::AABCharacterBase()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//컨트롤러의 회전을 받아서, 설정하는 모드를 모두 해제.
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+
+	//무브먼트 설정.
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0.f,720.f,0.f);
+	GetCharacterMovement()->JumpZVelocity = 600.f; 	//점프
+
+	//컴포넌트 설정
+	GetCapsuleComponent()->SetCapsuleHalfHeight(88.f);
 	GetCapsuleComponent()->SetCollisionProfileName(CPROFILE_ABCAPSULE);		//컴포넌트 설정. 물리에서 만든 매크로 CPROFILE_ABCAPSULE
 	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));	//메시의 콜리전은 NOCollision 설정 (주로 렉돌에 사용됨).
+
+	GetMesh()->SetRelativeLocationAndRotation(
+		FVector(0.f,0.f,-88.f)
+		,FRotator(0.f,-90.f,0.f)
+	);
+
+	//리소스 설정  static- 한번만 할것이니,
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterMesh(TEXT("/Game/InfinityBladeWarriors/Character/CompleteCharacters/SK_CharM_Cardboard.SK_CharM_Cardboard"));
+	if(CharacterMesh.Object)
+	{
+		GetMesh()->SetSkeletalMesh(CharacterMesh.Object);
+	}
+	// Animation Blueprint 설정.
+	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnim(TEXT("/Game/ArenaBattle/Animation/ABP_ABCharacter.ABP_ABCharacter"));
+	if(CharacterAnim.Class)
+	{
+		GetMesh()->SetAnimClass(CharacterAnim.Class);
+	}
 
 	static ConstructorHelpers::FObjectFinder<UABCharacterControlData> ShoulderDataRef(TEXT("/Game/ArenaBattle/CharacterControl/ABC_Shoulder.ABC_Shoulder"));
 	if(ShoulderDataRef.Object)

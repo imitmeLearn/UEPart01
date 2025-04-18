@@ -15,37 +15,6 @@
 
 AABCharacterPlayer::AABCharacterPlayer()
 {
-	//컨트롤러의 회전을 받아서, 설정하는 모드를 모두 해제.
-	bUseControllerRotationPitch = false;
-	bUseControllerRotationYaw = false;
-	bUseControllerRotationRoll = false;
-
-	//무브먼트 설정.
-	GetCharacterMovement()->bOrientRotationToMovement = true;
-	GetCharacterMovement()->RotationRate = FRotator(0.f, 720.f, 0.f);
-	GetCharacterMovement()->JumpZVelocity = 600.f; 	//점프
-
-	//컴포넌트 설정
-	GetCapsuleComponent()->SetCapsuleHalfHeight(88.f);
-	GetMesh()->SetRelativeLocationAndRotation(
-		FVector(0.f, 0.f, -88.f)
-		, FRotator(0.f, -90.f, 0.f)
-	);
-
-	//리소스 설정  static- 한번만 할것이니,
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterMesh(TEXT("/Game/Characters/Mannequins/Meshes/SKM_Quinn.SKM_Quinn"));
-	if (CharacterMesh.Object)
-	{
-		GetMesh()->SetSkeletalMesh(CharacterMesh.Object);
-	}
-
-	// Animation Blueprint 설정.
-	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnim(TEXT("/Game/Characters/Mannequins/Animations/ABP_Quinn.ABP_Quinn_C"));
-	if (CharacterAnim.Class)
-	{
-		GetMesh()->SetAnimClass(CharacterAnim.Class);
-	}
-
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = 500.f;
@@ -56,37 +25,37 @@ AABCharacterPlayer::AABCharacterPlayer()
 
 	//Input
 	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Shoulder_Move.IA_Shoulder_Move"));
-	if (ShoulderMoveActionRef.Object)
+	if(ShoulderMoveActionRef.Object)
 	{
 		ShoulderMoveAction = ShoulderMoveActionRef.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> ShoulderLookActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Shoulder_Look.IA_Shoulder_Look"));
-	if (ShoulderLookActionRef.Object)
+	if(ShoulderLookActionRef.Object)
 	{
 		ShoulderLookAction = ShoulderLookActionRef.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> QuarterMoveActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Quarter_Move.IA_Quarter_Move"));
-	if (QuarterMoveActionRef.Object)
+	if(QuarterMoveActionRef.Object)
 	{
 		QuarterMoveAction = QuarterMoveActionRef.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> JumpActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Jump.IA_Jump"));
-	if (JumpActionRef.Object)
+	if(JumpActionRef.Object)
 	{
 		JumpAction = JumpActionRef.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> ChangeControlActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_ChangeControl.IA_ChangeControl"));
-	if (ChangeControlActionRef.Object)
+	if(ChangeControlActionRef.Object)
 	{
 		ChangeControlAction = ChangeControlActionRef.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputAction> AttackActionRef(TEXT("/Game/ArenaBattle/Input/Actions/IA_Attack.IA_Attack"));
-	if (AttackActionRef.Object)
+	if(AttackActionRef.Object)
 	{
 		AttackAction = AttackActionRef.Object;
 	}
@@ -109,13 +78,13 @@ void AABCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	auto EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 
 	//Binding.
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this
-		, &ACharacter::Jump/*//캐릭터가 가지고 있는 기본 함수. 연결!*/);
-	EnhancedInputComponent->BindAction(ChangeControlAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ChangeCharacterControl);
-	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::Attack);
-	EnhancedInputComponent->BindAction(ShoulderMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderMove);
-	EnhancedInputComponent->BindAction(ShoulderLookAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::ShoulderLook);
-	EnhancedInputComponent->BindAction(QuarterMoveAction, ETriggerEvent::Triggered, this, &AABCharacterPlayer::QuarterMove);
+	EnhancedInputComponent->BindAction(JumpAction,ETriggerEvent::Triggered,this
+		,&ACharacter::Jump/*//캐릭터가 가지고 있는 기본 함수. 연결!*/);
+	EnhancedInputComponent->BindAction(ChangeControlAction,ETriggerEvent::Triggered,this,&AABCharacterPlayer::ChangeCharacterControl);
+	EnhancedInputComponent->BindAction(AttackAction,ETriggerEvent::Triggered,this,&AABCharacterPlayer::Attack);
+	EnhancedInputComponent->BindAction(ShoulderMoveAction,ETriggerEvent::Triggered,this,&AABCharacterPlayer::ShoulderMove);
+	EnhancedInputComponent->BindAction(ShoulderLookAction,ETriggerEvent::Triggered,this,&AABCharacterPlayer::ShoulderLook);
+	EnhancedInputComponent->BindAction(QuarterMoveAction,ETriggerEvent::Triggered,this,&AABCharacterPlayer::QuarterMove);
 }
 
 void AABCharacterPlayer::SetCharacterControl(ECharacterControlType NewCharacterControlType)
@@ -129,7 +98,7 @@ void AABCharacterPlayer::SetCharacterControl(ECharacterControlType NewCharacterC
 
 	// Add InputMapping Context to Enhanced Input System.
 	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
-	if (auto SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+	if(auto SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 	{
 		SubSystem->ClearAllMappings();
 		SubSystem->AddMappingContext(
@@ -158,11 +127,10 @@ void AABCharacterPlayer::SetCharacterControlData(const UABCharacterControlData* 
 void AABCharacterPlayer::ChangeCharacterControl()
 {
 	// 사용할 캐릭터 컨트롤을 변경하는 함수.
-	if (CurrentCharacterControlType == ECharacterControlType::Quarter)
+	if(CurrentCharacterControlType == ECharacterControlType::Quarter)
 	{
 		SetCharacterControl(ECharacterControlType::Shoulder);
-	}
-	else if (CurrentCharacterControlType == ECharacterControlType::Shoulder)
+	} else if(CurrentCharacterControlType == ECharacterControlType::Shoulder)
 	{
 		SetCharacterControl(ECharacterControlType::Quarter);
 	}
@@ -174,15 +142,15 @@ void AABCharacterPlayer::ShoulderMove(const FInputActionValue& Value)
 
 	//컨트롤러의 회전 값.
 	FRotator Rotation = GetController()->GetControlRotation();
-	FRotator YawRotation(0.f, Rotation.Yaw, 0.f);	//요만 뜯는 이유는,
+	FRotator YawRotation(0.f,Rotation.Yaw,0.f);	//요만 뜯는 이유는,
 
 	//방향구하기.
 	FVector ForwardVector = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	FVector RightVector = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	//무브먼트 컴포넌트에 값 전달//결국 하고 싶은건!!!!! 이거
-	AddMovementInput(ForwardVector, Movement.X);
-	AddMovementInput(RightVector, Movement.Y);
+	AddMovementInput(ForwardVector,Movement.X);
+	AddMovementInput(RightVector,Movement.Y);
 }
 
 void AABCharacterPlayer::ShoulderLook(const FInputActionValue& Value)
@@ -200,15 +168,15 @@ void AABCharacterPlayer::QuarterMove_mujisung(const FInputActionValue& Value)
 	//입력 값 읽기.
 	FVector2D Movement = Value.Get<FVector2D>();
 	float MovementVectorSize = 1.f;
-	if (Movement.SizeSquared() > 1.f)	//두입력 들어올때, 크기가 1이 아니기에,
+	if(Movement.SizeSquared() > 1.f)	//두입력 들어올때, 크기가 1이 아니기에,
 	{
 		Movement.Normalize();	//방향은 항상 1이여야 하기에! //무겁지만,
 	}
 
-	FVector MoveDirection = FVector(Movement.X, Movement.Y, 0.f);	//축 이동방향 설정
+	FVector MoveDirection = FVector(Movement.X,Movement.Y,0.f);	//축 이동방향 설정
 
 	////입력에 따른 방향으로 이동하도록, 입력전달
-	AddMovementInput(MoveDirection, MovementVectorSize);
+	AddMovementInput(MoveDirection,MovementVectorSize);
 }
 void AABCharacterPlayer::Attack()
 {
@@ -225,7 +193,7 @@ void AABCharacterPlayer::QuarterMove(const FInputActionValue& Value)
 
 	// 두 방향으로 입력이 들어오면, 이동 방향은 정규화해 크기를 1로 만들고,
 	// 입력 스케일을 1로 강제 설정.
-	if (MovementVectorSizeSquared > 1.0f)
+	if(MovementVectorSizeSquared > 1.0f)
 	{
 		Movement.Normalize(); //이게 무거워서, 최대한 안쓰려고
 		MovementVectorSize = 1.0f;
@@ -236,12 +204,12 @@ void AABCharacterPlayer::QuarterMove(const FInputActionValue& Value)
 		MovementVectorSize = FMath::Sqrt(MovementVectorSizeSquared);
 	}
 
-	FVector MoveDirection = FVector(Movement.X, Movement.Y, 0.0f);
+	FVector MoveDirection = FVector(Movement.X,Movement.Y,0.0f);
 
 	//캐릭터가 이동하는 방향에 맞게 컨트롤러 회전 설정.
 	//카메라 안돌리고 싶으면, 옵션 끄는 - 에셋에서 하는..??
 	Controller->SetControlRotation(FRotationMatrix::MakeFromX(MoveDirection).Rotator());	//앞방향 - 시선방향 기준으로 회전만들때 쓰는 0 오일러 값 나오는?
 
 	// 입력에 따른 방향으로 이동하도록 입력 전달.
-	AddMovementInput(MoveDirection, MovementVectorSize);
+	AddMovementInput(MoveDirection,MovementVectorSize);
 }
