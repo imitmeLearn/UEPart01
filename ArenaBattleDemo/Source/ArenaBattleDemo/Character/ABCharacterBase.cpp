@@ -213,6 +213,17 @@ void AABCharacterBase::PostInitializeComponents()
 	Stat->OnHpZero.AddUObject(this,&AABCharacterBase::SetDead);
 }
 
+void AABCharacterBase::SetupCahracterWidget(UUserWidget * InUserWidget)
+{
+	UABHpBarWidget* HpBarWidget = Cast<UABHpBarWidget>(InUserWidget);
+	if(HpBarWidget)
+	{
+		HpBarWidget->SetMaxHp(Stat->GetMaxHP());				// 최대 체력 값 설정.
+		HpBarWidget->UpdateHpBar(Stat->GetCurrnetHP());			// HP 퍼센트가 제대로 계산 되도록 현재 체력 설정.
+		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar);	 // 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
+	}
+}
+
 void AABCharacterBase::ProcessComboCommand()
 {
 	// 현재 재생 중인 콤보 확인.
