@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interface/ABAnimationAttackInterface.h"
+#include "Interface/ABCharacterWidgetInterface.h"
 
 #include "ABCharacterBase.generated.h"
 
@@ -17,6 +18,7 @@ enum class ECharacterControlType: uint8
 
 UCLASS()
 class ARENABATTLEDEMO_API AABCharacterBase: public ACharacter,public IABAnimationAttackInterface
+	,public IABCharacterWidgetInterface
 {
 	GENERATED_BODY()
 public:
@@ -24,11 +26,12 @@ public:
 	AABCharacterBase();
 
 	virtual void SetCharacterControlData(const class UABCharacterControlData* InCharacterControlData);
+	virtual void SetUpCharacterWidget(UUserWidget* InUserWidget);
 	virtual void AttackHitCheck() override;	//공격 감지 함수 (애님 노티파이로부터 호출됨.)
 
 	//데미지 처리 함수
 	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const& DamageEvent,class AController* EventInstigator,AActor* DamageCauser) override;
-
+	virtual void PostInitializeComponents() override;
 protected:
 	//컴보 액션 처리 함수.
 	//공격 처음 재생할 떄와 콤보 액션 처리를 분기.

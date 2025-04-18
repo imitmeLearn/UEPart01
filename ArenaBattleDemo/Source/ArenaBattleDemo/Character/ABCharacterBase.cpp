@@ -12,6 +12,7 @@
 #include "Components/WidgetComponent.h"
 
 #include "UI/ABWidgetComponent.h"
+#include "UI/ABHpBarWidget.h"
 
 // Sets default values
 AABCharacterBase::AABCharacterBase()
@@ -120,6 +121,18 @@ void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* In
 	GetCharacterMovement()->RotationRate = InCharacterControlData->RotationRate;
 }
 
+void AABCharacterBase::SetUpCharacterWidget(UUserWidget * InUserWidget)
+{
+	//필요한 위젯 정보 가져오기.
+	UABHpBarWidget* HpBarWidget = Cast<UABHpBarWidget>(InUserWidget);
+	if(HpBarWidget)
+	{
+		HpBarWidget->SetMaxHp(Stat->GetMaxHP());				// 최대 체력 값 설정.
+		HpBarWidget->UpdateHpBar(Stat->GetCurrnetHP());			// HP 퍼센트가 제대로 계산 되도록 현재 체력 설정.
+		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar); 		// 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
+	}
+}
+
 void AABCharacterBase::AttackHitCheck()
 {
 	UE_LOG(LogTemp,Log,TEXT("HIT!!"));
@@ -189,8 +202,15 @@ float AABCharacterBase::TakeDamage(float DamageAmount,FDamageEvent const & Damag
 {
 	Super::TakeDamage(DamageAmount,DamageEvent,EventInstigator,DamageCauser);
 
-	SetDead();
+	Stat->ApplyDamage(DamageAmount);	//스탯 정보가 업데이트 되도록 데미지 전달.
+
 	return DamageAmount;
+}
+
+void AABCharacterBase::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	Stat->OnHpZero.AddUObject(this,&AABCharacterBase::SetDead);
 }
 
 void AABCharacterBase::ProcessComboCommand()
@@ -323,6 +343,7 @@ void AABCharacterBase::SetDead()
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);	//캐릭터 무브먼트 컴포넌트 끄기
 	SetActorEnableCollision(false);										//콜리전 끄기
 	PlayDeadAnimation();												//죽는 애니메이션 재생
+	HpBar->SetHiddenInGame(true);	//죽었을 때, hpBar (위젯) 사라지도록 처리.
 }
 
 void AABCharacterBase::PlayDeadAnimation()

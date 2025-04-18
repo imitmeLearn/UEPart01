@@ -2,6 +2,7 @@
 
 #include "UI/ABHpBarWidget.h"
 #include "Components/ProgressBar.h"
+#include "Interface/ABCharacterWidgetInterface.h"
 
 UABHpBarWidget::UABHpBarWidget(const FObjectInitializer & ObjectInitializer)
 	:Super (ObjectInitializer)
@@ -28,4 +29,11 @@ void UABHpBarWidget::NativeConstruct()
 
 	HpProgressBar=	Cast<UProgressBar>(GetWidgetFromName(TEXT("PbHpBar")));		//위젯 참조 설정을 위해 이름으로 검색.
 	ensure(HpProgressBar);
+
+	//..내정보 전달이 하고싶어. : 캐릭터에 내 정보(위젯)을 전달. 강참조 발생하니. 인터페이스를 통해 우회해 전달 (느슨한 결합)
+	IABCharacterWidgetInterface* CharacterWidget =	Cast<IABCharacterWidgetInterface>(OwningActor);
+	if(CharacterWidget)
+	{
+		CharacterWidget->SetupCahracterWidget(this);		//인터페이스를 통해서 캐릭터에 내 정보(위젯)전달.
+	}
 }
