@@ -131,5 +131,5 @@ protected:	//Item Section
 
 	// 무기 아이템을 획득했을 때 사용할 스켈레탈 메시 컴포넌트.
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = Equipment,meta = (AllowPrivateAccess = "true"))
-		TSoftObjectPtr<class USkeletalMeshComponent> Weapon;
+		TObjectPtr<class USkeletalMeshComponent> Weapon;
 };
