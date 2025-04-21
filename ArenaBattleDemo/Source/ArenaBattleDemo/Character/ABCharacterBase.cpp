@@ -113,6 +113,43 @@ AABCharacterBase::AABCharacterBase()
 		HpBar->SetDrawSize(FVector2D(150.f,15.f));					//크기설정
 		HpBar->SetCollisionEnabled(ECollisionEnabled::NoCollision);	//콜리전 끄기
 	}
+
+	//ITEM SETCTION
+	TakeItemActions.Add
+	(
+		FTakeItemDelegateWrapper
+		(
+		FOnTakeItemDelegate::CreateUObject
+		(
+		this
+		,&AABCharacterBase::EquipWeapon
+	)
+	)
+	);
+
+	TakeItemActions.Add
+	(
+		FTakeItemDelegateWrapper
+		(
+		FOnTakeItemDelegate::CreateUObject
+		(
+		this
+		,&AABCharacterBase::DrinkPotion
+	)
+	)
+	);
+
+	TakeItemActions.Add
+	(
+		FTakeItemDelegateWrapper
+		(
+		FOnTakeItemDelegate::CreateUObject
+		(
+		this
+		,&AABCharacterBase::ReadScroll
+	)
+	)
+	);
 }
 
 void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* InCharacterControlData)
@@ -229,17 +266,29 @@ void AABCharacterBase::SetupCahracterWidget(UUserWidget * InUserWidget)
 	}
 }
 
-void AABCharacterBase::TakeItem(UABItemData * InItemData)
-{}
+void AABCharacterBase::TakeItem(UABItemData* InItemData)
+{
+	//아이템 정보가 넘어오면 처리.
+	if(InItemData)
+	{
+		TakeItemActions[(uint8)InItemData->Type].ItemDelegate.ExecuteIfBound(InItemData);
+	}
+}
 
 void AABCharacterBase::DrinkPotion(UABItemData* InItemData)
-{}
+{
+	UE_LOG(LogABCharacter,Log,TEXT("Drink Potion"));
+}
 
 void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
-{}
+{
+	UE_LOG(LogABCharacter,Log,TEXT("Equip Weapon"));
+}
 
 void AABCharacterBase::ReadScroll(UABItemData* InItemData)
-{}
+{
+	UE_LOG(LogABCharacter,Log,TEXT("Read Scroll"));
+}
 
 void AABCharacterBase::ProcessComboCommand()
 {
