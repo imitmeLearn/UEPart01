@@ -128,4 +128,8 @@ protected:	//Item Section
 	virtual void DrinkPotion(class UABItemData* InItemData) ;
 	virtual void EquipWeapon(class UABItemData* InItemData) ;
 	virtual void ReadScroll(class UABItemData* InItemData) ;
+
+	// 무기 아이템을 획득했을 때 사용할 스켈레탈 메시 컴포넌트.
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = Equipment,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class USkeletalMeshComponent> Weapon;
 };

@@ -14,7 +14,9 @@
 #include "UI/ABWidgetComponent.h"
 #include "UI/ABHpBarWidget.h"
 
-#include "Item/ABItemData.h"
+#include "Item/ABWeaponItemData.h"
+
+#include "Components/SkeletalMeshComponent.h"
 
 //로그 카테고리 정의
 DEFINE_LOG_CATEGORY(LogABCharacter);
@@ -150,6 +152,12 @@ AABCharacterBase::AABCharacterBase()
 	)
 	)
 	);
+
+	//무기 보여줄 컴포넌트 생성.
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
+
+	//메시 컴포넌트 하위로 계층을 설정하고, 소캣 부착
+	Weapon->SetupAttachment(GetMesh(),TEXT("hand_rSocket"));
 }
 
 void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* InCharacterControlData)
@@ -283,6 +291,13 @@ void AABCharacterBase::DrinkPotion(UABItemData* InItemData)
 void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
 {
 	UE_LOG(LogABCharacter,Log,TEXT("Equip Weapon"));
+	//함수에 전달된 아이템 데이터 에셋을 무기 데이터러 변환.
+	UABWeaponItemData* WeaponItemData = Cast<UABWeaponItemData>(InItemData);
+	if(WeaponItemData)		//변환성공했으면
+	{
+		//무기 컴포넌트에 해당 스캘레탈 메시 설정.
+		Weapon->SetSkeletalMesh(WeaponItemData->WeaponMesh);
+	}
 }
 
 void AABCharacterBase::ReadScroll(UABItemData* InItemData)
