@@ -295,8 +295,14 @@ void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
 	UABWeaponItemData* WeaponItemData = Cast<UABWeaponItemData>(InItemData);
 	if(WeaponItemData)		//변환성공했으면
 	{
-		//무기 컴포넌트에 해당 스캘레탈 메시 설정.
-		Weapon->SetSkeletalMesh(WeaponItemData->WeaponMesh);
+		//무기 메시가 아직 로딩 안된 경우, 로드 처리
+		if(WeaponItemData->WeaponMesh.IsPending())
+		{
+			WeaponItemData->WeaponMesh.LoadSynchronous();
+		}
+
+		//무기 컴포넌트에 '로드가 완료된' 스캘레탈 메시 설정.
+		Weapon->SetSkeletalMesh(WeaponItemData->WeaponMesh.Get());
 	}
 }
 
