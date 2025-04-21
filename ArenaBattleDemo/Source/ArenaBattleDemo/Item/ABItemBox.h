@@ -16,6 +16,16 @@ public:
 	AABItemBox();
 
 protected:
+	// 액터의 충돌을 담당할 박스 컴포넌트.
+	UPROPERTY(VisibleAnywhere,Category = Box)
+		TObjectPtr<class UBoxComponent> Trigger;
 
+	// 아이템 박스를 보여줄 메시 컴포넌트.
+	UPROPERTY(VisibleAnywhere,Category = Box)
+		TObjectPtr<class UStaticMeshComponent> Mesh;
+
+	// 박스와 상호작용했을 때 보여줄 파티클 효과 컴포넌트.
+	UPROPERTY(VisibleAnywhere,Category = Box)
+		TObjectPtr<class UParticleSystemComponent> Effect;
 public:
 };
