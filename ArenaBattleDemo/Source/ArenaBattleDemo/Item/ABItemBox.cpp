@@ -6,6 +6,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Physics/ABCollision.h"
 
+#include "Interface/ABCharacterItemInterface.h"
+
 // Sets default values
 AABItemBox::AABItemBox()
 {
@@ -54,6 +56,21 @@ AABItemBox::AABItemBox()
 
 void AABItemBox::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
 {
+	//아이템이 널이면, 꽝
+	if(!Item)
+	{
+		Destroy();
+		return;
+	}
+	//아이템 있으면, 캐럭터에 아이템 획득 메시지 전달.
+	IABCharacterItemInterface* OverlappedPawn = Cast<IABCharacterItemInterface>(OtherActor);
+
+	//부딪힌 문체가,
+	if(OverlappedPawn)
+	{
+		OverlappedPawn->TakeItem(Item);
+	}
+
 	//파티클 재생.
 	Effect->Activate();
 

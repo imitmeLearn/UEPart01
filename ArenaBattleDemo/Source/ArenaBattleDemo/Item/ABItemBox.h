@@ -44,5 +44,8 @@ protected:
 	// 박스와 상호작용했을 때 보여줄 파티클 효과 컴포넌트.
 	UPROPERTY(VisibleAnywhere,Category = Box)
 		TObjectPtr<class UParticleSystemComponent> Effect;
+
+	UPROPERTY(EditAnywhere,Category = Item)
+		TObjectPtr<class UABItemData> Item;
 public:
 };

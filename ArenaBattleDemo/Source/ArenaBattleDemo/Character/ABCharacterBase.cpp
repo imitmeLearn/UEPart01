@@ -14,6 +14,11 @@
 #include "UI/ABWidgetComponent.h"
 #include "UI/ABHpBarWidget.h"
 
+#include "Item/ABItemData.h"
+
+//로그 카테고리 정의
+DEFINE_LOG_CATEGORY(LogABCharacter);
+
 // Sets default values
 AABCharacterBase::AABCharacterBase()
 {
@@ -223,6 +228,18 @@ void AABCharacterBase::SetupCahracterWidget(UUserWidget * InUserWidget)
 		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar);	 // 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
 	}
 }
+
+void AABCharacterBase::TakeItem(UABItemData * InItemData)
+{}
+
+void AABCharacterBase::DrinkPotion(UABItemData* InItemData)
+{}
+
+void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
+{}
+
+void AABCharacterBase::ReadScroll(UABItemData* InItemData)
+{}
 
 void AABCharacterBase::ProcessComboCommand()
 {
