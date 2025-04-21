@@ -21,6 +21,13 @@ AABItemBox::AABItemBox()
 
 	//..콜리전 프로파일 설정.
 	Trigger -> SetCollisionProfileName(CPROFILE_ABTRIGGER);
+
+	//박스의 크기 조정
+	Trigger->SetBoxExtent(FVector(40.f,42.f,30.f));
+
+	//트리거 발생하는 다이나믹 델리게이트에 함수 등록.
+	Trigger->OnComponentBeginOverlap.AddDynamic(this,&AABItemBox::OnOverlapBegin);
+
 	Mesh -> SetCollisionProfileName(TEXT("NoCollision"));
 
 	//에셋 로드
@@ -35,7 +42,33 @@ AABItemBox::AABItemBox()
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> EffectRef(TEXT("/Game/ArenaBattle/Effect/P_TreasureChest_Open_Mesh.P_TreasureChest_Open_Mesh"));
 	if(EffectRef.Object)
 	{
+		//파티클 에셋 설정
 		Effect->SetTemplate(EffectRef.Object);
+		//바로 재생되지 않도록 설정.
 		Effect->bAutoActivate = false;
 	}
+
+	//Trigger->OnComponentBeginOverlap
+	//Effect -> OnSystemFinished
+}
+
+void AABItemBox::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
+{
+	//파티클 재생.
+	Effect->Activate();
+
+	//메시는 안보이도록 처리(비활성화)
+	Mesh -> SetHiddenInGame(true);
+
+	//엑터의 콜리전 끄기.
+	SetActorEnableCollision(false);
+
+	//파티클 재생 종료시 발행되는 델리게이트에 함수 등록.
+	Effect->OnSystemFinished.AddDynamic(this,&AABItemBox::OnEffectFinished);
+}
+
+void AABItemBox::OnEffectFinished(UParticleSystemComponent * PSystem)
+{
+	//파티클 재생이 완료되면, 액터 삭제
+	Destroy();
 }
