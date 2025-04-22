@@ -25,14 +25,16 @@ protected:	//STAGE SECTION
 
 	//스테이지 트리거의 오버랩 이벤트 확인을 위한 함수
 		/*DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_SixParams(FComponentBeginOverlapSignature,UPrimitiveComponent,OnComponentBeginOverlap,UPrimitiveComponent*,OverlappedComponent,AActor*,OtherActor,UPrimitiveComponent*,OtherComp,int32,OtherBodyIndex,bool,bFromSweep,const FHitResult &,SweepResult);*/
-	void OnStageTriggerBeginOverlap(
-		UPrimitiveComponent* OverlappedComponent
-		,AActor* OtherActor
-		,UPrimitiveComponent* OtherComp
-		,int32 OtherBodyIndex
-		,bool bFromSweep
-		,const FHitResult& SweepResult
-	);
+
+	UFUNCTION()
+		void OnStageTriggerBeginOverlap(
+			UPrimitiveComponent* OverlappedComponent
+			,AActor* OtherActor
+			,UPrimitiveComponent* OtherComp
+			,int32 OtherBodyIndex
+			,bool bFromSweep
+			,const FHitResult& SweepResult
+		);
 
 protected:	//GATE SECTION (4개 문의 대한 섹션)
 	// 4개의 게이트(문)가 필요하기 때문에 Map으로 관리.
@@ -44,13 +46,14 @@ protected:	//GATE SECTION (4개 문의 대한 섹션)
 		TArray<TObjectPtr<class UBoxComponent>> GateTriggers;
 
 	//게이트 트리거의 오버랩 이벤트 확인을 위한 함수
-	void OnGateTriggerBeginOverlap(
-		UPrimitiveComponent* OverlappedComponent
-		,AActor* OtherActor
-		,UPrimitiveComponent* OtherComp
-		,int32 OtherBodyIndex
-		,bool bFromSweep
-		,const FHitResult& SweepResult
-	);
+	UFUNCTION()
+		void OnGateTriggerBeginOverlap(
+			UPrimitiveComponent* OverlappedComponent
+			,AActor* OtherActor
+			,UPrimitiveComponent* OtherComp
+			,int32 OtherBodyIndex
+			,bool bFromSweep
+			,const FHitResult& SweepResult
+		);
 public:
 };
