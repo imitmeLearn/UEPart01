@@ -76,10 +76,125 @@ AABStageGimmick::AABStageGimmick()
 		//생성한 컴포넌트 배열에 추가.
 		GateTriggers.Add(GateTrigger);
 	}
+
+	//시작할 때는 준비 상태로 설정.
+	CurrentState = EStageState::Ready;
+
+	//열거형 - 델리게이트 맵 설정
+	StageChangedActions.Add(
+		EStageState::Ready
+		,FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetReady)
+	);
+
+	StageChangedActions.Add(
+		EStageState::Fight
+		,FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetFight)
+	);
+
+	StageChangedActions.Add(
+		EStageState::Reward
+		,FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetChooseReward)
+	);
+
+	StageChangedActions.Add(
+		EStageState::Next
+		,FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetChooseNext)
+	);
+}
+
+void AABStageGimmick::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	//OnConstruction 이 호출될 때, 상태값도 갱신되도록 처리.
+	SetState(CurrentState);
+}
+
+void AABStageGimmick::SetState(EStageState InNewState)
+{
+	//예외처리
+	if(CurrentState == InNewState)
+	{
+		return;
+	}
+	//현재 상태 업데이트
+	CurrentState = InNewState;
+
+	//전달된 상태에 맵에 포함되어 있으면, 델리게이트 실행.
+	if(StageChangedActions.Contains(InNewState))	//키 가지고 있으면,
+	{
+		StageChangedActions[CurrentState].StageChangedDelegate.ExecuteIfBound();
+	}
 }
 
 void AABStageGimmick::OnStageTriggerBeginOverlap(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
 {}
 
+void AABStageGimmick::SetReady()
+{
+	//가운데 트리거 활성화.
+	StageTrigger -> SetCollisionProfileName(CPROFILE_ABTRIGGER);
+
+	//플레이어가 게이트와 상호작용하지 않도록 콜리전 끄기.
+	for(const auto& GateTrigger : GateTriggers)	//objetPtr 이니까.
+	{
+		GateTrigger->SetCollisionProfileName(TEXT("NoCollision"));
+	}
+
+	//모든 문 닫기.
+	CloseAllGates();
+}
+
+void AABStageGimmick::SetFight()	 //콜리전 반응 없어야 함.
+{
+	//가운데 트리거 활성화.
+	StageTrigger -> SetCollisionProfileName(TEXT("NoCollision"));
+
+	//플레이어가 게이트와 상호작용하지 않도록 콜리전 끄기.
+	for(const auto& GateTrigger : GateTriggers)	//objetPtr 이니까.
+	{
+		GateTrigger->SetCollisionProfileName(TEXT("NoCollision"));
+	}
+
+	//모든 문 닫기.
+	CloseAllGates();
+}
+
+void AABStageGimmick::SetChooseReward()
+{}
+
+void AABStageGimmick::SetChooseNext()	//문만 활성화 되어야 햐.
+{
+	//가운데 트리거 활성화.
+	StageTrigger -> SetCollisionProfileName(TEXT("NoCollision"));
+
+	//플레이어가 게이트와 상호작용하지 않도록 콜리전 끄기.
+	for(const auto& GateTrigger : GateTriggers)	//objetPtr 이니까.
+	{
+		GateTrigger->SetCollisionProfileName(CPROFILE_ABTRIGGER);
+	}
+
+	//모든 문 닫기.
+	OpenAllGates();
+}
+
 void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
 {}
+
+void AABStageGimmick::OpenAllGates()
+{
+	//문 액터의 배열을 순회하면서, 회전 설정.
+	for(const auto& Gate:Gates)
+	{
+		Gate.Value->SetRelativeRotation(FRotator(0.f,-90.f,0.f));
+	}
+}
+
+void AABStageGimmick::CloseAllGates()
+{
+	//문 액터의 배열을 순회하면서, 회전 설정.
+	for(const auto& Gate:Gates)
+	{
+		Gate.Value->SetRelativeRotation(FRotator::ZeroRotator/*(0.f,0.f,0.f)*/);	//요 회전 0 :
+	}
+}
