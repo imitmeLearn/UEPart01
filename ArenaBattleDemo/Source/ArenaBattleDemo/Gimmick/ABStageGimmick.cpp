@@ -4,7 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Physics/ABCollision.h"
-
+#include "Character/ABCharacterNonPlayer.h"
 // Sets default values
 AABStageGimmick::AABStageGimmick()
 {
@@ -100,6 +100,12 @@ AABStageGimmick::AABStageGimmick()
 		EStageState::Next
 		,FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetChooseNext)
 	);
+
+	////FIGHT SECTION
+	OpponentSpawnTime = 2.f;
+
+	//생성할 NPC 클래스 타입지정
+	OpponentClass = AABCharacterNonPlayer::StaticClass();
 }
 
 void AABStageGimmick::OnConstruction(const FTransform& Transform)
@@ -128,7 +134,10 @@ void AABStageGimmick::SetState(EStageState InNewState)
 }
 
 void AABStageGimmick::OnStageTriggerBeginOverlap(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
-{}
+{
+	//캐릭터가 스테이지에 입장하면 대전 상태로 전환.
+	SetState(EStageState::Fight);
+}
 
 void AABStageGimmick::SetReady()
 {
@@ -158,6 +167,15 @@ void AABStageGimmick::SetFight()	 //콜리전 반응 없어야 함.
 
 	//모든 문 닫기.
 	CloseAllGates();
+
+	//NPC 생성.
+	GetWorld()->GetTimerManager().SetTimer (
+		OpponentTimerHandle		//타이머 핸들
+		,this					//콜백 함수 소유 객체
+		,&AABStageGimmick::OpponentSpawn	//콜백함수.
+		,OpponentSpawnTime		//타이머 시간 값.
+		,false					//방복 여부
+	);
 }
 
 void AABStageGimmick::SetChooseReward()
@@ -179,7 +197,45 @@ void AABStageGimmick::SetChooseNext()	//문만 활성화 되어야 햐.
 }
 
 void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
-{}
+{
+	//게이트에는 하나의태그를 설정했기 때문에 이를 확인.
+	ensure(OverlappedComponent->ComponentTags.Num() == 1);
+
+	//태그 확인 (예: +XGate)
+	FName ComponentTag = OverlappedComponent->ComponentTags[0];
+
+	//태그에서 스테이지를 배치할 소캣의 이름을 가져오기.
+	FName SocketName = FName(*ComponentTag.ToString().Left(2));
+
+	//소캣이 있는지 확인.
+	check(Stage->DoesSocketExist(SocketName));	//개발단계에서 확인필요할 때 싸용하는  ensure  check - 스태틱어서트? //https://dev.epicgames.com/documentation/ko-kr/unreal-engine/asserts-in-unreal-engine
+
+	//소캣 이름을 통해 위치 값 가져오기.
+	FVector NewLocation = Stage->GetSocketLocation(SocketName);
+
+	//가져온 위치에 이미 다른 스테이지가 없는지 확인
+	TArray<FOverlapResult> OverlapResults;
+	FCollisionQueryParams CollisionQueryParams(
+		SCENE_QUERY_STAT(GateTrigger),
+		false,
+		this
+	);
+	// 오버랩으로 검사.
+	bool Result =GetWorld()->OverlapMultiByObjectType(
+		OverlapResults		//충돌 결과를 반환할 변수
+		,NewLocation		//충돌 판정할 위치
+		,FQuat::Identity	//회전.
+		,FCollisionObjectQueryParams::InitType::AllDynamicObjects	//충돌 판정 오브젝트 채널
+		,FCollisionShape::MakeSphere(775.f)							//충돌 판정할 쌔 사용할 모형,
+		,CollisionQueryParams										//콜리전 옵션(자기는 제외하기 위해)
+	);
+
+	//생성하려는 위치에 다른 스테이지ㅏ가 없아면, 생성 진항.
+	if(!Result)
+	{
+		GetWorld()->SpawnActor<AABStageGimmick>(NewLocation,FRotator::ZeroRotator);
+	}
+}
 
 void AABStageGimmick::OpenAllGates()
 {
@@ -196,5 +252,28 @@ void AABStageGimmick::CloseAllGates()
 	for(const auto& Gate:Gates)
 	{
 		Gate.Value->SetRelativeRotation(FRotator::ZeroRotator/*(0.f,0.f,0.f)*/);	//요 회전 0 :
+	}
+}
+
+void AABStageGimmick::OpponentDestroyed(AActor * DestroyedActor)
+{
+	//nPC 죽으면 보상 단계로 설정.
+	SetState(EStageState::Reward);
+}
+
+void AABStageGimmick::OpponentSpawn()
+{
+	// NPC를 생성할 위치 설정.
+	const FVector SpawnLocation = GetActorLocation() + FVector::UpVector * 88.0f;
+
+	// NPC 생성.
+	AActor* OpponentActor
+		= GetWorld()->SpawnActor(OpponentClass,&SpawnLocation,&FRotator::ZeroRotator);
+
+	// NPC가 죽었을 때 발행되는 델리게이트에 등록.
+	AABCharacterNonPlayer* ABOpponentCharacter = Cast<AABCharacterNonPlayer>(OpponentActor);
+	if(ABOpponentCharacter)
+	{
+		ABOpponentCharacter->OnDestroyed.AddDynamic(this,&AABStageGimmick::OpponentDestroyed);
 	}
 }

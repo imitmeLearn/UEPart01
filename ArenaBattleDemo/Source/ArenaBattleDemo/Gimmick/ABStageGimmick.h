@@ -104,5 +104,26 @@ protected:	//GATE SECTION (4개 문의 대한 섹션)
 
 	void OpenAllGates();
 	void CloseAllGates();
+
+protected:	//FIGHT SECTION
+	//대전할NPC 지정을 위한 클래스 변수 선언
+	//TSubclassOf 는 지정한 클래스를 제한적으로 보여주는 필터링을 제공함.
+	UPROPERTY(EditAnywhere,Category = Fight,meta = (AllowPrivateAccess = "true"))
+		TSubclassOf<class AABCharacterNonPlayer> OpponentClass;
+
+	//NPC 생성하기 까지 대기할 시간
+	UPROPERTY(EditAnywhere,Category = Fight,meta = (AllowPrivateAccess = "true"))
+		float OpponentSpawnTime;
+
+	//NPC 무찔렀을 때, 실행할 함수.
+	UFUNCTION()
+		void OpponentDestroyed(AActor* DestroyedActor);
+
+	// NPC 생성 시간을 계산할 타이머 핸들.
+	FTimerHandle OpponentTimerHandle;
+
+	// 타이머가 종료되어 NPC가 생성될 때 호출할 함수.
+	void OpponentSpawn();
+
 public:
 };
