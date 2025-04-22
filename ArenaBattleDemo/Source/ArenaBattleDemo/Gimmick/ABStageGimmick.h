@@ -15,7 +15,42 @@ public:
 	// Sets default values for this actor's properties
 	AABStageGimmick();
 
-protected:
+protected:	//STAGE SECTION
 
+	// 스테이지를 보여줄 때 사용할 메시 컴포넌트.
+	UPROPERTY(VisibleAnywhere,Category = Stage,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UStaticMeshComponent> Stage;
+	UPROPERTY(VisibleAnywhere,Category = Stage,meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UBoxComponent> StageTrigger;
+
+	//스테이지 트리거의 오버랩 이벤트 확인을 위한 함수
+		/*DECLARE_DYNAMIC_MULTICAST_SPARSE_DELEGATE_SixParams(FComponentBeginOverlapSignature,UPrimitiveComponent,OnComponentBeginOverlap,UPrimitiveComponent*,OverlappedComponent,AActor*,OtherActor,UPrimitiveComponent*,OtherComp,int32,OtherBodyIndex,bool,bFromSweep,const FHitResult &,SweepResult);*/
+	void OnStageTriggerBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent
+		,AActor* OtherActor
+		,UPrimitiveComponent* OtherComp
+		,int32 OtherBodyIndex
+		,bool bFromSweep
+		,const FHitResult& SweepResult
+	);
+
+protected:	//GATE SECTION (4개 문의 대한 섹션)
+	// 4개의 게이트(문)가 필요하기 때문에 Map으로 관리.
+	UPROPERTY(VisibleAnywhere,Category = Gate,meta = (AllowPrivateAccess = "true"))
+		TMap<FName,TObjectPtr<class UStaticMeshComponent>> Gates;
+
+	//각 문의 트리거를 배열로 관리
+	UPROPERTY(VisibleAnywhere,Category = Gate,meta = (AllowPrivateAccess = "true"))
+		TArray<TObjectPtr<class UBoxComponent>> GateTriggers;
+
+	//게이트 트리거의 오버랩 이벤트 확인을 위한 함수
+	void OnGateTriggerBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent
+		,AActor* OtherActor
+		,UPrimitiveComponent* OtherComp
+		,int32 OtherBodyIndex
+		,bool bFromSweep
+		,const FHitResult& SweepResult
+	);
 public:
 };
