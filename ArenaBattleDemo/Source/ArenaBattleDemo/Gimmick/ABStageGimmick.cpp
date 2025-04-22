@@ -150,8 +150,8 @@ void AABStageGimmick::SetReady()
 		GateTrigger->SetCollisionProfileName(TEXT("NoCollision"));
 	}
 
-	//모든 문 닫기.
-	CloseAllGates();
+	// 준비 상태일 때는 문이 열려있도록 설정.
+	OpenAllGates();
 }
 
 void AABStageGimmick::SetFight()	 //콜리전 반응 없어야 함.
@@ -179,7 +179,19 @@ void AABStageGimmick::SetFight()	 //콜리전 반응 없어야 함.
 }
 
 void AABStageGimmick::SetChooseReward()
-{}
+{
+	// 가운데 트리거 활성화.
+	StageTrigger->SetCollisionProfileName(TEXT("NoCollision"));
+
+	// 플레이어가 게이트와 상호작용하지 않도록 콜리전 끄기.
+	for(const auto& GateTrigger : GateTriggers)
+	{
+		GateTrigger->SetCollisionProfileName(TEXT("NoCollision"));
+	}
+
+	// 모든 문 닫기.
+	CloseAllGates();
+}
 
 void AABStageGimmick::SetChooseNext()	//문만 활성화 되어야 햐.
 {
@@ -192,7 +204,7 @@ void AABStageGimmick::SetChooseNext()	//문만 활성화 되어야 햐.
 		GateTrigger->SetCollisionProfileName(CPROFILE_ABTRIGGER);
 	}
 
-	//모든 문 닫기.
+	// 모든 문 열기 (다른 스테이지로 이동할 수 있도록).
 	OpenAllGates();
 }
 
