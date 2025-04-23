@@ -72,6 +72,8 @@ void AABItemBox::PostInitializeComponents()
 	//3개 만든 상태니, 최소 3개 이상이어야 한 상태.
 	ensure(Assets.Num() > 0);
 
+	UE_LOG(LogTemp,Log,TEXT("Assets.Num(): %d"),Assets.Num());
+
 	//랜덤으로 인덱스 선택.
 	int32 RandomIndex = FMath::RandRange(0,Assets.Num() -1);
 
