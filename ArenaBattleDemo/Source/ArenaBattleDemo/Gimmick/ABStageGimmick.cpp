@@ -5,6 +5,8 @@
 #include "Components/BoxComponent.h"
 #include "Physics/ABCollision.h"
 #include "Character/ABCharacterNonPlayer.h"
+
+#include "Item/ABItemBox.h" //reward 상자 사용을 위한,해더에서 전방선언했기에!
 // Sets default values
 AABStageGimmick::AABStageGimmick()
 {
@@ -83,7 +85,9 @@ AABStageGimmick::AABStageGimmick()
 	//열거형 - 델리게이트 맵 설정
 	StageChangedActions.Add(
 		EStageState::Ready
+		//,FOnStageChangedDelegateWrapper(FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetReady))	//FOnStageChangedDelegateWrapper 생략가능.
 		,FOnStageChangedDelegate::CreateUObject(this,&AABStageGimmick::SetReady)
+
 	);
 
 	StageChangedActions.Add(
@@ -106,6 +110,20 @@ AABStageGimmick::AABStageGimmick()
 
 	//생성할 NPC 클래스 타입지정
 	OpponentClass = AABCharacterNonPlayer::StaticClass();
+
+	////REWARD SETCTION
+	//생성할 아이템 상자의 클래스 타입 설정
+	RewardItemClass = AABItemBox::StaticClass();
+
+	//생성 위치 설정.
+	for(const FName& GateSocket:GateSockets)
+	{
+		// 소켓 위치를 사용해 위치 값 구하기.
+		FVector BoxLocation = Stage->GetSocketLocation(GateSocket) / 2;
+
+		// 맵에 추가.
+		RewardBoxLocations.Add(GateSocket,BoxLocation);
+	}
 }
 
 void AABStageGimmick::OnConstruction(const FTransform& Transform)
@@ -191,6 +209,9 @@ void AABStageGimmick::SetChooseReward()
 
 	// 모든 문 닫기.
 	CloseAllGates();
+
+	//보상상자 생성
+	SpawnRewardBoxes();
 }
 
 void AABStageGimmick::SetChooseNext()	//문만 활성화 되어야 햐.
@@ -198,7 +219,7 @@ void AABStageGimmick::SetChooseNext()	//문만 활성화 되어야 햐.
 	//가운데 트리거 활성화.
 	StageTrigger -> SetCollisionProfileName(TEXT("NoCollision"));
 
-	//플레이어가 게이트와 상호작용하지 않도록 콜리전 끄기.
+	//플레이어가 게이트와 상호작용하지 않도록 콜리전 켜기.
 	for(const auto& GateTrigger : GateTriggers)	//objetPtr 이니까.
 	{
 		GateTrigger->SetCollisionProfileName(CPROFILE_ABTRIGGER);
@@ -287,5 +308,63 @@ void AABStageGimmick::OpponentSpawn()
 	if(ABOpponentCharacter)
 	{
 		ABOpponentCharacter->OnDestroyed.AddDynamic(this,&AABStageGimmick::OpponentDestroyed);
+	}
+}
+
+void AABStageGimmick::OnRewardTriggerBeginOverlap(UPrimitiveComponent * OverlappedComponent,AActor * OtherActor,UPrimitiveComponent * OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult & SweepResult)
+{
+	//캐릭터가 보상상자를 획득하면, 상자를 배열을 순회하면서, 처리 진행.
+	for(const auto& RewardBox : RewardBoxes)
+	{
+		//약참조여서,유효한지 꼭 확인해야 함.
+		//보상상자가 유효하고, 처리 진행.
+		if(RewardBox.IsValid())
+		{
+			//보상 상자의 포인터 가져오기.
+			AABItemBox* ValidBox =  RewardBox.Get();
+			AActor* OverlappedBox = OverlappedComponent->GetOwner();
+
+			//두 박스가 서로 다른 경우 제러.
+			if(OverlappedBox != ValidBox)
+			{
+				ValidBox->Destroy();
+			}
+		}
+	}
+
+	//다음 단계로 전환
+	SetState(EStageState::Next);
+}
+
+void AABStageGimmick::SpawnRewardBoxes()
+{
+	for(const auto& RewardBoxLocation : RewardBoxLocations)
+	{
+		//박스 생성 위치
+		FVector SpawnLocation =
+			GetActorLocation() //중심위치
+			+ RewardBoxLocation.Value //설정위치
+			+ FVector(0.f,0.f,30.f);	//높이 보정
+
+		//박스 엑터 생성
+		AActor* ItemActor =GetWorld()->SpawnActor(
+			RewardItemClass
+			,&SpawnLocation
+			,&FRotator::ZeroRotator
+		);
+
+		//생성이 잘 됐음, 아이템 박스 타입으로 형변환.
+		AABItemBox* RewardBoxActor = Cast<AABItemBox>(ItemActor);
+		if(RewardBoxActor)
+		{
+			//생성된 아이템 액터에 태그 추가ㅣ 나중 구분을 위해서!
+			RewardBoxActor->Tags.Add(RewardBoxLocation.Key);
+
+			// 오버랩 이벤트에 등록.
+			RewardBoxActor->GetTrigger()-> OnComponentBeginOverlap.AddDynamic(this,&AABStageGimmick::OnRewardTriggerBeginOverlap);
+
+			// 생성된 아이템 상자를 배열에 추가.
+			RewardBoxes.Add(RewardBoxActor);
+		}
 	}
 }

@@ -125,5 +125,35 @@ protected:	//FIGHT SECTION
 	// 타이머가 종료되어 NPC가 생성될 때 호출할 함수.
 	void OpponentSpawn();
 
+protected:	////REWARD SECTION
+	//보상상자 -
+	//없으면, 클래스 모드 필요
+	//보상상자 생성을 위한 클래스,
+	UPROPERTY(VisibleAnywhere,Category = Reward,meta = (AllowPrivateAccess = "true"))
+		TSubclassOf<class AABItemBox> RewardItemClass;
+
+	//박스 런타임 생성 시, 오버랩 판정하고, 자체는 생성로직에 등록가능하나, 여러개 생성 시, 하나랑 충돌하면, 충돌안한 나머지 지워야 하니, 생성한것들을 배열로 관리해야 한다.
+	//강참조는 objectPtr 약참조는 TWeakObjectPtr
+	TArray<TWeakObjectPtr<class AABItemBox>> RewardBoxes;
+
+	//보상 상자 생성 위치 맵으로 관리.
+	TMap<FName,FVector> RewardBoxLocations;
+
+	//생성된 상자와의 오버랩 이벤트를 처리할 때 사용할 함수.
+	//딜리게이트 연결을 위한, 인자-파라미터!
+	UFUNCTION()
+		void OnRewardTriggerBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent
+		,AActor* OtherActor
+		,UPrimitiveComponent* OtherComp
+		,int32 OtherBodyIndex
+		,bool bFromSweep
+		,const FHitResult& SweepResult
+		);
+
+	//보상상자 생성은, 함수에서
+	//보상상제 생성 함수.
+	void SpawnRewardBoxes();
+
 public:
 };

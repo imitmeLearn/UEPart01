@@ -217,7 +217,7 @@ void AABCharacterBase::AttackHitCheck()
 	///충돌 감지된 경우의 처리.
 	if(HitDetected)
 	{
-		const float AttackDamage = 30.f;	//데미지 양
+		const float AttackDamage = 300.f;	//데미지 양	//기본 30 = 테스트용 300 으로 변경 - 데이터테이블로 변경 예정.
 		FDamageEvent DamageEvent;	//데이미 이벤트
 
 		//데미지 전달

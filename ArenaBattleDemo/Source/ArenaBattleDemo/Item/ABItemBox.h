@@ -15,6 +15,11 @@ public:
 	// Sets default values for this actor's properties
 	AABItemBox();
 
+	//getter
+	FORCEINLINE class UBoxComponent* GetTrigger() const
+	{
+		return Trigger;
+	}
 protected:
 	//박스 컴포넌트의 오버랩 델리게이트에 등록할 함수.
 	// OnComponentBeginOverlap 델리게이트는 다이나믹으로 지정되어 있기 때문에
@@ -32,6 +37,7 @@ protected:
 	//파티클 재생 종료 시 발행되는 델리게이트에 등록할 함수.
 	UFUNCTION()
 		void OnEffectFinished(class UParticleSystemComponent* PSystem);
+
 protected:
 	// 액터의 충돌을 담당할 박스 컴포넌트.
 	UPROPERTY(VisibleAnywhere,Category = Box)
