@@ -266,12 +266,18 @@ void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent * Overlapped
 	//생성하려는 위치에 다른 스테이지ㅏ가 없아면, 생성 진항.
 	if(!Result)
 	{
-		AABStageGimmick* NewGimmick=GetWorld()->SpawnActor<AABStageGimmick>(NewLocation,FRotator::ZeroRotator);
+		FTransform SpawnTransform(NewLocation);
+
+		AABStageGimmick* NewGimmick=GetWorld()->SpawnActorDeferred<AABStageGimmick>//(NewLocation,FRotator::ZeroRotator);
+			(AABStageGimmick::StaticClass(),SpawnTransform);
 
 		//새로 생성한 스테이지의 숫자를 하나 증가.
 		if(NewGimmick)
 		{
 			NewGimmick->SetStageNum(CurrentStageNum +1);
+
+			//생성 완료 처리.
+			NewGimmick->FinishSpawning(SpawnTransform);
 		}
 	}
 }
@@ -357,15 +363,16 @@ void AABStageGimmick::SpawnRewardBoxes()
 			+ RewardBoxLocation.Value //설정위치
 			+ FVector(0.f,0.f,30.f);	//높이 보정
 
+		FTransform SpawnTransform(SpawnLocation);
+
 		//박스 엑터 생성
-		AActor* ItemActor =GetWorld()->SpawnActor(
+		AABItemBox* RewardBoxActor =GetWorld()->SpawnActorDeferred<AABItemBox>(
 			RewardItemClass
-			,&SpawnLocation
-			,&FRotator::ZeroRotator
+			,SpawnTransform
 		);
 
 		//생성이 잘 됐음, 아이템 박스 타입으로 형변환.
-		AABItemBox* RewardBoxActor = Cast<AABItemBox>(ItemActor);
+		//AABItemBox* RewardBoxActor = Cast<AABItemBox>(ItemActor);
 		if(RewardBoxActor)
 		{
 			//생성된 아이템 액터에 태그 추가ㅣ 나중 구분을 위해서!
@@ -376,6 +383,15 @@ void AABStageGimmick::SpawnRewardBoxes()
 
 			// 생성된 아이템 상자를 배열에 추가.
 			RewardBoxes.Add(RewardBoxActor);
+		}
+	}
+
+	//생성을 모두 완료한 후에 FinishSpawming() 호출.
+	for(const auto& RewardBox : RewardBoxes)
+	{
+		if(RewardBox.IsValid())
+		{
+			RewardBox.Get()->FinishSpawning(RewardBox.Get()->GetActorTransform());
 		}
 	}
 }
