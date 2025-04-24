@@ -1,12 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ABCharacterStatComponent.h"
+#include "GameData/ABGameSingleton.h"
 
 // Sets default values for this component's properties
 UABCharacterStatComponent::UABCharacterStatComponent()
 {
-	MaxHp = 200.f;
-	CurrentHp = MaxHp;
+	//MaxHp = 200.f;
+	CurrentHp = BaseStat.MaxHp;
 }
 
 // Called when the game starts
@@ -14,7 +15,22 @@ void UABCharacterStatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetHp(MaxHp);	//게임 시작되면, 체력 가득 채우기.
+	//레벨 스탯 데이터 설정.
+	SetLevelStat(static_cast<int32>(CurrentLevel));
+
+	SetHp(BaseStat.MaxHp);	//게임 시작되면, 체력 가득 채우기.
+}
+
+void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
+{
+	//유효한 레벨 범위 고정
+	CurrentLevel = FMath::Clamp(InNewLevel,1,UABGameSingleton::Get().CharacterMaxLevel);
+
+	//게임 싱글톤으로부터 레벨 데이터 가져오기.
+	BaseStat = UABGameSingleton::Get().GetCharacterStat(CurrentLevel);
+
+	//설정한 값에 문제 없는지 확인.
+	check(BaseStat.MaxHp > 0.f);
 }
 
 float UABCharacterStatComponent::ApplyDamage(float InDamage)
@@ -34,6 +50,6 @@ float UABCharacterStatComponent::ApplyDamage(float InDamage)
 
 void UABCharacterStatComponent::SetHp(float NewHp)
 {
-	CurrentHp = FMath::Clamp<float> (NewHp,0.f,MaxHp);			//현재 체력 업데이트
+	CurrentHp = FMath::Clamp<float> (NewHp,0.f,BaseStat.MaxHp);			//현재 체력 업데이트
 	OnHpChanged.Broadcast(CurrentHp);	 //체력 변경이벤트 발행
 }

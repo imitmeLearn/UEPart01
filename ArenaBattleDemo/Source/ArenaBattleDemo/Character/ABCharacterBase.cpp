@@ -177,7 +177,7 @@ void AABCharacterBase::SetUpCharacterWidget(UUserWidget * InUserWidget)
 	UABHpBarWidget* HpBarWidget = Cast<UABHpBarWidget>(InUserWidget);
 	if(HpBarWidget)
 	{
-		HpBarWidget->SetMaxHp(Stat->GetMaxHP());				// 최대 체력 값 설정.
+		HpBarWidget->SetMaxHp(Stat->GetTotalStat().MaxHp);	//GetMaxHP());				// 최대 체력 값 설정.
 		HpBarWidget->UpdateHpBar(Stat->GetCurrnetHP());			// HP 퍼센트가 제대로 계산 되도록 현재 체력 설정.
 		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar); 		// 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
 	}
@@ -190,7 +190,7 @@ void AABCharacterBase::AttackHitCheck()
 	//캐릭터 몸통에서 약간 앞으로 (캡슐의 반지름 만큼) 설정.
 	FVector Start = GetActorLocation() + GetActorForwardVector() * GetCapsuleComponent()->GetScaledCapsuleRadius();
 
-	const float AttackRange = 150.f;	//공격거리
+	const float AttackRange = Stat->GetTotalStat().AttackRange;  // 150.f;	//공격거리
 	FVector End = Start + GetActorForwardVector() * AttackRange;
 
 	FCollisionQueryParams Params(
@@ -217,7 +217,7 @@ void AABCharacterBase::AttackHitCheck()
 	///충돌 감지된 경우의 처리.
 	if(HitDetected)
 	{
-		const float AttackDamage = 300.f;	//데미지 양	//기본 30 = 테스트용 300 으로 변경 - 데이터테이블로 변경 예정.
+		const float AttackDamage = Stat->GetTotalStat().Attack;	//300.f;	//데미지 양	//기본 30 = 테스트용 300 으로 변경 - 데이터테이블로 변경 예정.
 		FDamageEvent DamageEvent;	//데이미 이벤트
 
 		//데미지 전달
@@ -268,7 +268,7 @@ void AABCharacterBase::SetupCahracterWidget(UUserWidget * InUserWidget)
 	UABHpBarWidget* HpBarWidget = Cast<UABHpBarWidget>(InUserWidget);
 	if(HpBarWidget)
 	{
-		HpBarWidget->SetMaxHp(Stat->GetMaxHP());				// 최대 체력 값 설정.
+		HpBarWidget->SetMaxHp(Stat->GetTotalStat().MaxHp);	// GetMaxHP());				// 최대 체력 값 설정.
 		HpBarWidget->UpdateHpBar(Stat->GetCurrnetHP());			// HP 퍼센트가 제대로 계산 되도록 현재 체력 설정.
 		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar);	 // 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
 	}
@@ -311,6 +311,16 @@ void AABCharacterBase::ReadScroll(UABItemData* InItemData)
 	UE_LOG(LogABCharacter,Log,TEXT("Read Scroll"));
 }
 
+int32 AABCharacterBase::GetLevel() const
+{
+	return Stat->GetCurrnetLevel();
+}
+
+void AABCharacterBase::SetLevel(int32 InNewLevel)
+{
+	Stat->SetLevelStat(InNewLevel);
+}
+
 void AABCharacterBase::ProcessComboCommand()
 {
 	// 현재 재생 중인 콤보 확인.
@@ -343,11 +353,11 @@ void AABCharacterBase::ComboActionBegin()
 	//이동 비활성화
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 
-	//몽타주 재생.
+	//몽타주` 재생.
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if(AnimInstance)
 	{
-		const float AttackSpeedRate = 1.f;
+		const float AttackSpeedRate = Stat->GetTotalStat().AttackSpeed;		//1.f;	//매직넘버
 		AnimInstance->Montage_Play(ComboActionMontage,AttackSpeedRate);
 
 		//몽타주 재생이 시작되면, 재생이 종료될 때 호출되는 델리게이트 등록.
@@ -383,7 +393,7 @@ void AABCharacterBase::SetComboCheckTimer()
 	ensure(ComboActionData->EffectiveFrameCount.IsValidIndex(ComboIndex));
 
 	//콤보 시간 계산(확인)
-	const float AttackSpeedRate = 1.f;
+	const float AttackSpeedRate = Stat->GetTotalStat().AttackSpeed;		// 1.f;	//매직넘버 - 하드코딩 수정
 	float ComboEffectiveTime = (ComboActionData->EffectiveFrameCount[ComboIndex] / ComboActionData->FrameRate) / AttackSpeedRate;
 
 	//타이머 설정

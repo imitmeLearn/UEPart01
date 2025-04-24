@@ -43,6 +43,17 @@ public:
 
 	//트랜스폼 뿐만 아니라, 다른 속성이 변경되는 경우에 호출됟로고 해주는 함수!
 	virtual void OnConstruction(const FTransform& Transform) override;
+public:	//STAT SECTION
+
+	//CurrentStageNum 에 대한 GETTER/SETTER
+	FORCEINLINE int32 GetStageNum() const
+	{
+		return CurrentStageNum;
+	}
+	FORCEINLINE void SetStageNum(int32 InNewStageNum)
+	{
+		CurrentStageNum = InNewStageNum;
+	}
 
 protected:	//STAGE SECTION
 
@@ -155,5 +166,7 @@ protected:	////REWARD SECTION
 	//보상상제 생성 함수.
 	void SpawnRewardBoxes();
 
-public:
+protected:	////STAGE STAT SECTION
+	UPROPERTY(VisibleInstanceOnly,Category = Stat,meta = (AllowPrivateAccess = "true"))
+		int32 CurrentStageNum;
 };

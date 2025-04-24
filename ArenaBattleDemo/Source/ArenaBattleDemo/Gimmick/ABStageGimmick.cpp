@@ -266,7 +266,13 @@ void AABStageGimmick::OnGateTriggerBeginOverlap(UPrimitiveComponent * Overlapped
 	//생성하려는 위치에 다른 스테이지ㅏ가 없아면, 생성 진항.
 	if(!Result)
 	{
-		GetWorld()->SpawnActor<AABStageGimmick>(NewLocation,FRotator::ZeroRotator);
+		AABStageGimmick* NewGimmick=GetWorld()->SpawnActor<AABStageGimmick>(NewLocation,FRotator::ZeroRotator);
+
+		//새로 생성한 스테이지의 숫자를 하나 증가.
+		if(NewGimmick)
+		{
+			NewGimmick->SetStageNum(CurrentStageNum +1);
+		}
 	}
 }
 
@@ -297,17 +303,22 @@ void AABStageGimmick::OpponentDestroyed(AActor * DestroyedActor)
 void AABStageGimmick::OpponentSpawn()
 {
 	// NPC를 생성할 위치 설정.
-	const FVector SpawnLocation = GetActorLocation() + FVector::UpVector * 88.0f;
+	const FTransform SpawnTransform (GetActorLocation() + FVector::UpVector * 88.0f);
 
 	// NPC 생성.
-	AActor* OpponentActor
-		= GetWorld()->SpawnActor(OpponentClass,&SpawnLocation,&FRotator::ZeroRotator);
+	AABCharacterNonPlayer* ABOpponentCharacter
+		= GetWorld()->SpawnActorDeferred<AABCharacterNonPlayer>(OpponentClass,SpawnTransform);
 
 	// NPC가 죽었을 때 발행되는 델리게이트에 등록.
-	AABCharacterNonPlayer* ABOpponentCharacter = Cast<AABCharacterNonPlayer>(OpponentActor);
 	if(ABOpponentCharacter)
 	{
 		ABOpponentCharacter->OnDestroyed.AddDynamic(this,&AABStageGimmick::OpponentDestroyed);
+
+		//현재 스테이지 레벨을 캐릭터 NPC 레벨 로 설정.
+		ABOpponentCharacter->SetLevel(CurrentStageNum);
+
+		//생성완료 처리.
+		ABOpponentCharacter->FinishSpawning(SpawnTransform);
 	}
 }
 
