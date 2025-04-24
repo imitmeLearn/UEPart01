@@ -303,6 +303,9 @@ void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
 
 		//무기 컴포넌트에 '로드가 완료된' 스캘레탈 메시 설정.
 		Weapon->SetSkeletalMesh(WeaponItemData->WeaponMesh.Get());
+
+		//무기 아이템 데이터가 가지는 부가 스탯 설정.
+		Stat->SetModifierStat(WeaponItemData->ModifierStat);
 	}
 }
 

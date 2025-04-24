@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Item/ABItemData.h"
+#include "GameData/ABCharacterStat.h"
+
 #include "ABWeaponItemData.generated.h"
 
 /**
@@ -29,4 +31,7 @@ public:
 	// 제공할 무기에 대한 스켈레탈 메시.
 	UPROPERTY(EditAnywhere,Category = Weapon)
 		TSoftObjectPtr<USkeletalMesh> WeaponMesh;
+
+	UPROPERTY(EditAnywhere,Category = Stat)
+		FABCharacterStat ModifierStat;
 };
