@@ -14,4 +14,24 @@ class ARENABATTLEDEMO_API AABAIController: public AAIController
 {
 	GENERATED_BODY()
 public:
+	AABAIController();
+
+	//AI 실행하는 함수.
+	void RunAI();
+	//AI 중지하는 함수.
+	void StopAI();
+
+protected:
+	//컨트롤러가 폰에 빙의했을 때 실행되는 이벤트 함수.
+	virtual void OnPossess(APawn* InPawn) override;
+
+public:	//DATA SECTION
+
+	//BB에셋
+	UPROPERTY()
+		TObjectPtr<class UBlackboardData> BBAsset;
+
+	//BT에셋
+	UPROPERTY()
+		TObjectPtr<class UBehaviorTree> BTAsset;
 };
