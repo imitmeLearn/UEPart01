@@ -22,4 +22,8 @@ class ARENABATTLEDEMO_API IABCharacterAIInterface
 
 		// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	virtual float GetAIPatrolRadius()=0;
+	virtual float GetAIDetectRange()=0;
+	virtual float GetAIAttactRange()=0;
+	virtual float GetAITurnSpeed()=0;
 };

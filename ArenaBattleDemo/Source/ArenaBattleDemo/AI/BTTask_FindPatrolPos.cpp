@@ -5,6 +5,7 @@
 #include "AIController.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Interface/ABCharacterAIInterface.h"
 
 UBTTask_FindPatrolPos::UBTTask_FindPatrolPos()
 {}
@@ -22,6 +23,13 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 		return EBTNodeResult::Failed;
 	}
 
+	//인터페이스 형변환.
+	IABCharacterAIInterface* AIPawn = Cast<IABCharacterAIInterface>(ControllingPawn);
+	if(!AIPawn)
+	{
+		return EBTNodeResult::Failed;
+	}
+
 	UNavigationSystemV1* NavSystem =  UNavigationSystemV1::GetNavigationSystem(
 
 		ControllingPawn->GetWorld()
@@ -35,6 +43,9 @@ EBTNodeResult::Type UBTTask_FindPatrolPos::ExecuteTask(UBehaviorTreeComponent& O
 
 	//폰이 생성된 초기 위치 가져오기.
 	FVector Origin = OwnerComp.GetBlackboardComponent()->GetValueAsVector(BBKEY_HOMEPOS);
+
+	//AIPawn으로부터 정찰 반경 받앙오기.
+	float PatrolRadius = AIPawn->GetAIPatrolRadius();
 
 	//결과 저장을 위한 변수
 	FNavLocation NextPatrolPos;

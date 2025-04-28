@@ -12,6 +12,7 @@
  */
 UCLASS(config=ArenaBattle)
 class ARENABATTLEDEMO_API AABCharacterNonPlayer: public AABCharacterBase
+	,public IABCharacterAIInterface
 {
 	GENERATED_BODY()
 public:
@@ -32,4 +33,10 @@ protected:
 
 	//배열 채워진 경로를 활용해 비동기로 에셋을 로드할 때 사용.
 	TSharedPtr<FStreamableHandle> NPCMeshHandle;
+
+protected:	//AI SECTION
+	virtual float GetAIPatrolRadius() override;
+	virtual float GetAIDetectRange() override;
+	virtual float GetAIAttactRange() override;
+	virtual float GetAITurnSpeed() override;
 };
