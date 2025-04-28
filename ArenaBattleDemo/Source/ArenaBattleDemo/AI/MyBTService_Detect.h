@@ -13,4 +13,8 @@ UCLASS()
 class ARENABATTLEDEMO_API UMyBTService_Detect: public UBTService
 {
 	GENERATED_BODY()
+
+public:
+	UMyBTService_Detect();
+	virtual	void TickNode(UBehaviorTreeComponent& OwnerComp,uint8* NodeMemory,float DeltaSeconds) override;
 };
