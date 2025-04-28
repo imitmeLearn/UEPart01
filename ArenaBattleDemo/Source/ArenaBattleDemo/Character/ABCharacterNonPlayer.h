@@ -40,4 +40,15 @@ protected:	//AI SECTION
 	virtual float GetAIDetectRange() override;
 	virtual float GetAIAttactRange() override;
 	virtual float GetAITurnSpeed() override;
+
+	//캐릭터에서 델리게이트 넘길 때 사용할 함수.
+	virtual void SetAIAttackDelegate (const FAICharacterAttackFinished& InOnAttackFinised) override;
+
+	//AI 가 공각할때 사용할 함수.
+	virtual void AttackByAI() override;
+
+	//SetAIAttackDelegate 함수 로 전달된 델리게이트를 저장할 변수.
+	FAICharacterAttackFinished OnAttackFinished;
+
+	virtual void NotifyComboActionEnd() override;
 };

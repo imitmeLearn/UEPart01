@@ -199,7 +199,7 @@ void AABCharacterBase::AttackHitCheck()
 		,this							// 세번째 인자: 무시할 액터 목록.
 	);
 
-	const float AttackRadius = 30.f;	//트레이스에 사용할 구체의 반지름
+	const float AttackRadius = Stat->GetAttackRadius();// 30.f;	//트레이스에 사용할 구체의 반지름
 
 	FHitResult OutHitResult;	//트레이스를 호라용해 충돌 검사
 
@@ -385,7 +385,13 @@ void AABCharacterBase::ComboActionEnd(UAnimMontage* TargetMontage,bool IsProperl
 
 	//캐릭터 무브먼트 컴포넌트 모드 복구
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+
+	//공격이 끝나면, 함수 호출 -> override 이기에, 이벤트류함수 만듬.
+	NotifyComboActionEnd();
 }
+
+void AABCharacterBase::NotifyComboActionEnd()
+{}
 
 void AABCharacterBase::SetComboCheckTimer()
 {

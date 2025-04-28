@@ -8,6 +8,9 @@ UABCharacterStatComponent::UABCharacterStatComponent()
 {
 	//MaxHp = 200.f;
 	CurrentHp = BaseStat.MaxHp;
+
+	CurrentLevel = 1.f;
+	AttackRadius = 50.f;
 }
 
 // Called when the game starts

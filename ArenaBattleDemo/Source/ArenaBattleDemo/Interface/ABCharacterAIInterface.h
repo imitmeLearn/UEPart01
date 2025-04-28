@@ -12,7 +12,7 @@ class UABCharacterAIInterface: public UInterface
 {
 	GENERATED_BODY()
 };
-
+DECLARE_DELEGATE(FAICharacterAttackFinished);
 /**
  *
  */
@@ -26,4 +26,10 @@ public:
 	virtual float GetAIDetectRange()=0;
 	virtual float GetAIAttactRange()=0;
 	virtual float GetAITurnSpeed()=0;
+
+	//캐릭터에서 델리게이트 넘길 때 사용할 함수.
+	virtual void SetAIAttackDelegate (const FAICharacterAttackFinished& InOnAttackFinised) = 0;
+
+	//AI 가 공각할때 사용할 함수.
+	virtual void AttackByAI()=0;
 };

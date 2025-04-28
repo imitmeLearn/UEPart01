@@ -31,9 +31,14 @@ public:	//Getter. __ 안붙이려고, 타입 재정의?
 	{
 		return MaxHp;
 	}*/
-	FORCEINLINE float GetCurrnetHP()
+	FORCEINLINE float GetCurrnetHP() const /* 단순 반환 */
 	{
 		return CurrentHp;
+	}
+
+	FORCEINLINE float GetAttackRadius() const
+	{
+		return AttackRadius;
 	}
 
 	//캐릭터 레벨 설정 함수
@@ -81,6 +86,10 @@ protected:	//스탯
 	//현재레벨.
 	UPROPERTY(Transient,VisibleInstanceOnly,Category = Stat)
 		float CurrentLevel;
+
+	//공격볌위
+	UPROPERTY(Transient,VisibleInstanceOnly,Category = Stat,meta =(AllowPrivateAcess = "true"))
+		float AttackRadius;
 
 	//캐릭터 기본 스텟 데이터
 	UPROPERTY(Transient,VisibleInstanceOnly,Category = Stat,meta =(AllowPrivateAcess = "true"))
