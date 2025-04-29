@@ -22,6 +22,7 @@ class ARENABATTLEDEMO_API AABCharacterPlayer: public AABCharacterBase
 public:
 	AABCharacterPlayer();
 	virtual void BeginPlay() override;
+	virtual void SetDead() override;	//플레이어가죽었을 때, 처리 함수
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //입력 바인딩 하는 함수
 
