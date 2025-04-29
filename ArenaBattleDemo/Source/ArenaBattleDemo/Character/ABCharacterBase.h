@@ -7,7 +7,7 @@
 #include "Interface/ABAnimationAttackInterface.h"
 #include "Interface/ABCharacterWidgetInterface.h"
 #include "Interface/ABCharacterItemInterface.h"
-
+#include "GameData/ABCharacterStat.h"
 #include "ABCharacterBase.generated.h"
 
 //로그 카테고리 추가.
@@ -139,4 +139,10 @@ protected:	//Item Section
 public: //STAT SECTION
 	int32 GetLevel() const;
 	void SetLevel(int32 InNewLevel);
+
+	//스탯 변경 델리게이트 연결 실행 함수
+	void ApplyStat(
+	const FABCharacterStat& BaseStat
+	,const FABCharacterStat& ModifierStat
+	);
 };

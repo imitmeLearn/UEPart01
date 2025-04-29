@@ -261,6 +261,8 @@ void AABCharacterBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	Stat->OnHpZero.AddUObject(this,&AABCharacterBase::SetDead);
+	//스텟 변경 시 발생되는 이벤트에 함수 등록.
+	Stat->OnStatChanged.AddUObject(this,&AABCharacterBase::ApplyStat);
 }
 
 void AABCharacterBase::SetupCahracterWidget(UUserWidget * InUserWidget)
@@ -322,6 +324,14 @@ int32 AABCharacterBase::GetLevel() const
 void AABCharacterBase::SetLevel(int32 InNewLevel)
 {
 	Stat->SetLevelStat(InNewLevel);
+}
+
+void AABCharacterBase::ApplyStat(const FABCharacterStat& BaseStat,const FABCharacterStat& ModifierStat)
+{
+	//스텟 데이터 최종 이동 속력
+	float MovenentSpeed = (BaseStat + ModifierStat).MovementSpeed;
+	//컴포넌트 속력
+	GetCharacterMovement()->MaxWalkSpeed = MovenentSpeed;
 }
 
 void AABCharacterBase::ProcessComboCommand()
