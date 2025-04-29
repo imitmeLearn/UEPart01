@@ -37,7 +37,7 @@ void UABHUDWidget::NativeConstruct()
 	//제대로 로드 됐는지 확인
 	ensure(HpBar!= nullptr);
 	//이름으로 검색해 위젯 설정
-	CharacterStat = Cast<UABCharacterStatWidget>(GetWidgetFromName(TEXT("EidgetCharacterStat")));
+	CharacterStat = Cast<UABCharacterStatWidget>(GetWidgetFromName(TEXT("WidgetCharacterStat")));
 	//제대로 로드 됐는지 확인
 	ensure(CharacterStat!= nullptr);
 
