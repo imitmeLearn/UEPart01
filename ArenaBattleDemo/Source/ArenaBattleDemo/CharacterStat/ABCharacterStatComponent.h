@@ -12,6 +12,7 @@
 
 DECLARE_MULTICAST_DELEGATE(FOnHpZeroDelegate);				// 체력 값이 0이 되었을 때 발행할 델리게이트.
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHpChangedDelegate,float /*CurrentHp*/);			// 체력 변경이 발생할 때 발행할 델리게이트.
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnStatChangedDelegate,const FABCharacterStat& /*BaseStat*/,const FABCharacterStat& /*ModifierStat*/);		// 스택 정보 변경이 발생할 때 발행할 델리게이트
 
 UCLASS(ClassGroup=(Custom),meta=(BlueprintSpawnableComponent))
 class ARENABATTLEDEMO_API UABCharacterStatComponent: public UActorComponent
@@ -32,7 +33,7 @@ public:	//Getter. __ 안붙이려고, 타입 재정의?
 	{
 		return MaxHp;
 	}*/
-	FORCEINLINE float GetCurrnetHP() const /* 단순 반환 */
+	FORCEINLINE float GetCurrentHp() const /* 단순 반환 */
 	{
 		return CurrentHp;
 	}
@@ -53,12 +54,29 @@ public:	//Getter. __ 안붙이려고, 타입 재정의?
 	FORCEINLINE void SetModifierStat(const FABCharacterStat& InModifierStat)
 	{
 		ModifierStat = InModifierStat;
+		OnStatChanged.Broadcast(BaseStat,ModifierStat);
 	}
 
 	// 전체 스탯 데이터 반환 함수.
 	FORCEINLINE FABCharacterStat GetTotalStat() const
 	{
 		return BaseStat + ModifierStat;
+	}
+
+	//기본 슷탯 정보가 변경될 때 사용할 함수.
+	FORCEINLINE void SetBaseStat(const FABCharacterStat& InBaseStat)
+	{
+		BaseStat = InBaseStat;
+		OnStatChanged.Broadcast(BaseStat,ModifierStat);
+	}
+
+	FORCEINLINE const FABCharacterStat& GetBaseStat() const
+	{
+		return BaseStat;
+	}
+	FORCEINLINE const FABCharacterStat& GetModifierStat() const
+	{
+		return ModifierStat;
 	}
 
 	//데미지 전달 함수.
@@ -69,7 +87,7 @@ protected:
 public:
 	FOnHpZeroDelegate OnHpZero;			//체력을 모두 소진했을 때
 	FOnHpChangedDelegate OnHpChanged;	//체력 변경 델리게이트
-
+	FOnStatChangedDelegate OnStatChanged;	//스텟 변경 델리게이트
 protected:	//스탯
 	// 최대 체력 값.
 

@@ -22,4 +22,6 @@ class ARENABATTLEDEMO_API IABCharacterHUDInterface
 
 		// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	// 캐릭터에서 HUD 위젯을 설정할 때 사용.
+	virtual void SetupHUDWidget(class UABHUDWidget* InHUDWidget) = 0;
 };
