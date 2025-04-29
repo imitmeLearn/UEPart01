@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "CharacterHUDInterface.generated.h"
+#include "ABCharacterHUDInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UCharacterHUDInterface: public UInterface
+class UABCharacterHUDInterface: public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,7 +16,7 @@ class UCharacterHUDInterface: public UInterface
 /**
  *
  */
-class ARENABATTLEDEMO_API ICharacterHUDInterface
+class ARENABATTLEDEMO_API IABCharacterHUDInterface
 {
 	GENERATED_BODY()
 
