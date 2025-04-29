@@ -24,7 +24,8 @@ public:
 
 protected:
 	// Called when the game starts
-	virtual void BeginPlay() override;
+	//virtual void BeginPlay() override;
+	virtual void InitializeComponent() override;
 
 public:	//Getter. __ 안붙이려고, 타입 재정의?
 	/*FORCEINLINE float GetMaxHP()

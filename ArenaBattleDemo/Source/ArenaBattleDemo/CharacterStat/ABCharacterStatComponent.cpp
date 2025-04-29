@@ -11,18 +11,31 @@ UABCharacterStatComponent::UABCharacterStatComponent()
 
 	CurrentLevel = 1.f;
 	AttackRadius = 50.f;
+
+	//bWantsInitializeComponent vmffotm tjfwjd - InitializeComponent 호출을 위한.
+	//성능 상 영향을 줄 수 있기 때문에 필요한 경우 사용하기 위한 설정
+	bWantsInitializeComponent = true;
 }
 
-// Called when the game starts
-void UABCharacterStatComponent::BeginPlay()
+void UABCharacterStatComponent::InitializeComponent()
 {
-	Super::BeginPlay();
-
+	Super::InitializeComponent();
 	//레벨 스탯 데이터 설정.
 	SetLevelStat(static_cast<int32>(CurrentLevel));
 
 	SetHp(BaseStat.MaxHp);	//게임 시작되면, 체력 가득 채우기.
 }
+
+// Called when the game starts
+//void UABCharacterStatComponent::BeginPlay()
+//{
+//	Super::BeginPlay();
+//
+//	//레벨 스탯 데이터 설정.
+//	SetLevelStat(static_cast<int32>(CurrentLevel));
+//
+//	SetHp(BaseStat.MaxHp);	//게임 시작되면, 체력 가득 채우기.
+//}
 
 void UABCharacterStatComponent::SetLevelStat(int32 InNewLevel)
 {
