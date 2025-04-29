@@ -16,6 +16,8 @@ class ARENABATTLEDEMO_API UABWeaponItemData: public UABItemData
 {
 	GENERATED_BODY()
 public:
+	UABWeaponItemData();
+public:
 	/*
 	//오버라이드 FPrimaryAssetId 값 반환하는
 	 첫번째 인자 : 태그값: 프로젝트 세팅에서 넣은 이름이랑 같은거 적기*/

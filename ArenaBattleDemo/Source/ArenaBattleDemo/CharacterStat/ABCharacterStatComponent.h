@@ -37,7 +37,14 @@ public:	//Getter. __ 안붙이려고, 타입 재정의?
 	{
 		return CurrentHp;
 	}
-
+	FORCEINLINE void HealHP(float InHealAmount)
+	{
+		CurrentHp = FMath::Clamp(
+			CurrentHp+InHealAmount
+			,0
+			,GetTotalStat().MaxHp
+		);
+	}
 	FORCEINLINE float GetAttackRadius() const
 	{
 		return AttackRadius;
@@ -69,7 +76,13 @@ public:	//Getter. __ 안붙이려고, 타입 재정의?
 		BaseStat = InBaseStat;
 		OnStatChanged.Broadcast(BaseStat,ModifierStat);
 	}
+	FORCEINLINE void AddBaseStat(const FABCharacterStat& InAddBaseStat)
+	{
+		BaseStat =BaseStat+ InAddBaseStat;
+		OnStatChanged.Broadcast(BaseStat,ModifierStat);
 
+		//또는 //SetBaseStat(BaseStat+ InAddBaseStat);
+	}
 	FORCEINLINE const FABCharacterStat& GetBaseStat() const
 	{
 		return BaseStat;

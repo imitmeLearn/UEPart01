@@ -14,7 +14,7 @@
 #include "UI/ABWidgetComponent.h"
 #include "UI/ABHpBarWidget.h"
 
-#include "Item/ABWeaponItemData.h"
+#include "Item/ABItems.h"
 
 #include "Components/SkeletalMeshComponent.h"
 
@@ -288,6 +288,13 @@ void AABCharacterBase::TakeItem(UABItemData* InItemData)
 void AABCharacterBase::DrinkPotion(UABItemData* InItemData)
 {
 	UE_LOG(LogABCharacter,Log,TEXT("Drink Potion"));
+
+	//dkdlxpa cjflfmf dnlgks gudqusghks.
+	UABPotionItemData* PotionItemData = Cast<UABPotionItemData>(InItemData);
+	if(PotionItemData)
+	{
+		Stat->HealHP(PotionItemData-> HealAmount);
+	}
 }
 
 void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
@@ -314,6 +321,12 @@ void AABCharacterBase::EquipWeapon(UABItemData* InItemData)
 void AABCharacterBase::ReadScroll(UABItemData* InItemData)
 {
 	UE_LOG(LogABCharacter,Log,TEXT("Read Scroll"));
+
+	UABScrollItemData* scrollItemData = Cast<UABScrollItemData>(InItemData);
+	if(scrollItemData)
+	{
+		Stat->AddBaseStat(scrollItemData->BaseStat);
+	}
 }
 
 int32 AABCharacterBase::GetLevel() const

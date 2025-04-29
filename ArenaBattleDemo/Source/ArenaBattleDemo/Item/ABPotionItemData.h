@@ -20,6 +20,8 @@ public:
 	UABPotionItemData();
 public:
 	//캐릭터 기본 스탯 데이터
+
 	UPROPERTY(EditAnywhere,Category = Stat)
-		FABCharacterStat BaseStat;
+		float HealAmount;
+	//FABCharacterStat BaseStat;
 };
