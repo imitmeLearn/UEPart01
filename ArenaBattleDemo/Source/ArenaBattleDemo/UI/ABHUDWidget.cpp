@@ -13,7 +13,7 @@ void UABHUDWidget::UpdateStat(const FABCharacterStat& BaseStat,const FABCharacte
 {
 	// HpBar의 최대 체력 스탯 설정.
 	FABCharacterStat TotalStat = (BaseStat + ModifierStat);
-	HpBar->SetMaxHp(TotalStat.MaxHp);
+	HpBar->UpdateStat(BaseStat,ModifierStat);	//HpBar->SetMaxHp(TotalStat.MaxHp); //HpBar->SetMaxHp(TotalStat.MaxHp);
 
 	// 캐릭터 스탯에 새로운 데이터 전달.
 	CharacterStat->UpdateStat(BaseStat,ModifierStat);

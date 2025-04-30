@@ -171,18 +171,6 @@ void AABCharacterBase::SetCharacterControlData(const UABCharacterControlData* In
 	GetCharacterMovement()->RotationRate = InCharacterControlData->RotationRate;
 }
 
-void AABCharacterBase::SetUpCharacterWidget(UUserWidget * InUserWidget)
-{
-	//필요한 위젯 정보 가져오기.
-	UABHpBarWidget* HpBarWidget = Cast<UABHpBarWidget>(InUserWidget);
-	if(HpBarWidget)
-	{
-		HpBarWidget->SetMaxHp(Stat->GetTotalStat().MaxHp);	//GetMaxHP());				// 최대 체력 값 설정.
-		HpBarWidget->UpdateHpBar(Stat->GetCurrentHp());			// HP 퍼센트가 제대로 계산 되도록 현재 체력 설정.
-		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar); 		// 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
-	}
-}
-
 void AABCharacterBase::AttackHitCheck()
 {
 	UE_LOG(LogTemp,Log,TEXT("HIT!!"));
@@ -265,14 +253,16 @@ void AABCharacterBase::PostInitializeComponents()
 	Stat->OnStatChanged.AddUObject(this,&AABCharacterBase::ApplyStat);
 }
 
-void AABCharacterBase::SetupCahracterWidget(UUserWidget * InUserWidget)
+void AABCharacterBase::SetupCharacterWidget(UUserWidget * InUserWidget)
 {
 	UABHpBarWidget* HpBarWidget = Cast<UABHpBarWidget>(InUserWidget);
 	if(HpBarWidget)
 	{
-		HpBarWidget->SetMaxHp(Stat->GetTotalStat().MaxHp);	// GetMaxHP());				// 최대 체력 값 설정.
+		//HpBarWidget->SetMaxHp(Stat->GetTotalStat().MaxHp);	// GetMaxHP());				// 최대 체력 값 설정.
+		HpBarWidget->UpdateStat(Stat->GetBaseStat(),Stat->GetModifierStat());
 		HpBarWidget->UpdateHpBar(Stat->GetCurrentHp());			// HP 퍼센트가 제대로 계산 되도록 현재 체력 설정.
 		Stat->OnHpChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateHpBar);	 // 체력 변경 이벤트(델리게이트)에 함수 및 객체 정보 등록.
+		Stat-> OnStatChanged.AddUObject(HpBarWidget,&UABHpBarWidget::UpdateStat);
 	}
 }
 

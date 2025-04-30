@@ -21,7 +21,7 @@ public:
 public:
 	//캐릭터 기본 스탯 데이터
 
-	UPROPERTY(EditAnywhere,Category = Stat)
+	UPROPERTY(EditAnywhere,Category = Hp)
 		float HealAmount;
 	//FABCharacterStat BaseStat;
 };
