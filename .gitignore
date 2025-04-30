@@ -157,3 +157,5 @@ DerivedDataCache/*
 UnrealInterface/Saved/Logs/UnrealInterface.log
 UnrealInterface/Saved/Telemetry/Telemetry.json
 
+/ArenaBattleDemo/Package
+/ArenaBattleDemo/Package_debug
