@@ -7,6 +7,8 @@
 #include "Character/ABCharacterNonPlayer.h"
 
 #include "Item/ABItemBox.h" //reward 상자 사용을 위한,해더에서 전방선언했기에!
+#include "Interface/ABGameInterface.h"	//상위 호출을 위한. - cast 해야 하니...
+#include "GameFramework\GameModeBase.h"
 // Sets default values
 AABStageGimmick::AABStageGimmick()
 {
@@ -303,8 +305,22 @@ void AABStageGimmick::CloseAllGates()
 void AABStageGimmick::OpponentDestroyed(AActor * DestroyedActor)
 {
 	//r게임의 점수 처리 및 클리어 여부를 확인하기 위해 게임 모드 가져오기.
-	GetWorld()->GetAuthGameMode();
+	IABGameInterface* ABGameMode
+		=Cast<IABGameInterface>
+		(
+		GetWorld()->GetAuthGameMode()
+		);
+	if(ABGameMode)
+	{
+		//점수 획득 처리
+		ABGameMode->OnPlayerScoreChanged(CurrentStageNum);
 
+		//게임 클리어 됏는지 확인, 됐으면, 함수 종료.
+		if(ABGameMode->IsGameCleared())
+		{
+			return;
+		}
+	}
 	//nPC 죽으면 보상 단계로 설정.
 	SetState(EStageState::Reward);
 }

@@ -10,12 +10,15 @@
 #include "EnhancedInputSubsystems.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework\GameModeBase.h"
 
 #include "ABCharacterControlData.h"
 
 #include "UI/ABHUDWidget.h"
 
 #include "CharacterStat/ABCharacterStatComponent.h"
+
+#include "Interface\ABGameInterface.h"
 
 AABCharacterPlayer::AABCharacterPlayer()
 {
@@ -92,6 +95,14 @@ void AABCharacterPlayer::SetDead()
 	{
 		//입력 비활성화
 		DisableInput(PlayerController);
+
+		//게임 종료 처리를 위해, 게임모드 가져오기.
+		IABGameInterface* ABGameMode = Cast<IABGameInterface>	(GetWorld()->GetAuthGameMode());
+		if(ABGameMode)
+		{
+			//플레이어 죽음을 알림.
+			ABGameMode->OnPlayerDead();
+		}
 	}
 }
 
