@@ -15,13 +15,19 @@ AABPlayerController::AABPlayerController()
 }
 
 void AABPlayerController::GameScoreChanged(int32 NewScore)
-{}
+{
+	K2_OnScoreChanged(NewScore);
+}
 
 void AABPlayerController::GameClear()
-{}
+{
+	K2_OnGameClear();
+}
 
 void AABPlayerController::GameOver()
-{}
+{
+	K2_OnGameOver();
+}
 
 void AABPlayerController::BeginPlay()
 {
@@ -31,11 +37,11 @@ void AABPlayerController::BeginPlay()
 	FInputModeGameOnly GameInput;
 	SetInputMode(GameInput);
 
-	//위젯 생성
-	ABHUDWidget = CreateWidget<UABHUDWidget>(this,ABHUDWidgetClass);
-	if(ABHUDWidget)
-	{
-		//위젯 화면에 추가해, UI 가 보일 수 있도록 설정.
-		ABHUDWidget->AddToViewport();
-	}
+	////위젯 생성 -> 블루프린트에 작성
+	//ABHUDWidget = CreateWidget<UABHUDWidget>(this,ABHUDWidgetClass);
+	//if(ABHUDWidget)
+	//{
+	//	//위젯 화면에 추가해, UI 가 보일 수 있도록 설정.
+	//	ABHUDWidget->AddToViewport();
+	//}
 }
