@@ -37,6 +37,9 @@ void AABPlayerController::GameOver()
 	{
 		UE_LOG(LogABPlayerController,Error,TEXT("SaveGameError!"));
 	}
+
+	//게임 시작할 떄도, 재시도 횟수 정보를 알 수 있도록 이벤트 발생.
+	K2_OnGameRetryCount(SaveGameInstance->RetryCount);
 }
 
 void AABPlayerController::BeginPlay()
@@ -60,6 +63,9 @@ void AABPlayerController::BeginPlay()
 	{
 		SaveGameInstance = NewObject<UABSaveGame>();
 	}
+
+	//게임 시작할 떄도, 재시도 횟수 정보를 알 수 있도록 이벤트 발생.
+	K2_OnGameRetryCount(SaveGameInstance->RetryCount);
 
 	////위젯 생성 -> 블루프린트에 작성
 	//ABHUDWidget = CreateWidget<UABHUDWidget>(this,ABHUDWidgetClass);

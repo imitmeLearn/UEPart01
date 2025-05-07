@@ -30,6 +30,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent,Category = Game,meta = (DisplayName = "OnGameOverCpp"))
 		void K2_OnGameOver();
 
+	//게임 재시작 횟수가 변경될 때, 사용할 이벤트.
+	UFUNCTION(BlueprintImplementableEvent,Category = Game,meta = (DisplayName = "OnGameRetryCountCpp"))
+		void K2_OnGameRetryCount(int32 NewRetryCount);
+
 	//게임 처리와 관련해 게임 모드에서 호출할 함수.
 	void GameScoreChanged(int32 NewScore);
 	void GameClear();
