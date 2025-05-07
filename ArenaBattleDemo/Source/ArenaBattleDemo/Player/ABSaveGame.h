@@ -14,4 +14,8 @@ class ARENABATTLEDEMO_API UABSaveGame: public USaveGame
 {
 	GENERATED_BODY()
 public:
+	UABSaveGame();
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category = Game)
+		int32 RetryCount;
 };

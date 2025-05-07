@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "ABPlayerController.generated.h"
+//로그 출력을 위한 카테고리 추가.
+DECLARE_LOG_CATEGORY_EXTERN(LogABPlayerController,Log,All);
 
 /**
  *
@@ -43,4 +45,10 @@ protected:
 	//생성할 위젯의 객체 정보를 저장할 변수
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category = HUD)
 		TObjectPtr<class UABHUDWidget>	ABHUDWidget;
+
+protected://SAVE GAME SECTION
+
+	//게임이 진행되는 동안 항상 메모리에 관리하도록 변수 추가.
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category = SaveGame)
+		TObjectPtr<class UABSaveGame>	SaveGameInstance;
 };
