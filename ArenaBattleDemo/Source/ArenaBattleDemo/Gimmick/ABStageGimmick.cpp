@@ -302,6 +302,9 @@ void AABStageGimmick::CloseAllGates()
 
 void AABStageGimmick::OpponentDestroyed(AActor * DestroyedActor)
 {
+	//r게임의 점수 처리 및 클리어 여부를 확인하기 위해 게임 모드 가져오기.
+	GetWorld()->GetAuthGameMode();
+
 	//nPC 죽으면 보상 단계로 설정.
 	SetState(EStageState::Reward);
 }
